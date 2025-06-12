@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class PlayerControllerWalkState : PlayerControllerBaseState
+public class PlayerControllerRunState : PlayerControllerBaseState
 {
-    public PlayerControllerWalkState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory playerControllerStateFactory)
+    public PlayerControllerRunState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory playerControllerStateFactory)
     : base(currentContext, playerControllerStateFactory) { }
 
-    public override void EnterState() { Debug.Log("Walk");  }
+    public override void EnterState() 
+    {
+        Debug.Log("Run");
+    }
 
     public override void UpdateState() 
-    {
+    { 
         CheckSwitchStates();
-        _ctx.CurrentSpeed = _ctx.MoveSpeed;
+        _ctx.CurrentSpeed = _ctx.SprintSpeed;
         _ctx.AppliedMovementX = _ctx.MoveInputX;
         _ctx.AppliedMovementZ = _ctx.MoveInputY;
     }
@@ -23,9 +26,9 @@ public class PlayerControllerWalkState : PlayerControllerBaseState
         {
             SwitchState(_factory.Idle());
         }
-        else if (_ctx.IsWalkPressed && _ctx.isRunPressed)
+        else if (_ctx.IsWalkPressed && !_ctx.isRunPressed)
         {
-            SwitchState(_factory.Run());
+            SwitchState(_factory.Walk());
         }
     }
 

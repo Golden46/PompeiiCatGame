@@ -1,7 +1,6 @@
-using System.ComponentModel.Design.Serialization;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class PlayerControllerStateMachine : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
     // Move settings
     [Header("Movement")]
     private Vector2 _moveInput;
+    private Vector3 _appliedMovement;
     private Vector3 _velocity;
     [SerializeField] private float _gravity = -9.81f;
 
@@ -26,6 +26,8 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     // Button pressed
     private bool _isJumpPressed;
+    private bool _isWalkPressed;
+    private bool _isRunPressed;
 
     // Camera settings
     [Header("Camera")]
@@ -42,8 +44,18 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     // Getters and Setters
     public PlayerControllerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-    public CharacterController CharacterController {  get { return _characterController; } }
+    public CharacterController CharacterController { get { return _characterController; } }
+    public float CurrentSpeed { get { return _currentSpeed; } set { _currentSpeed = value; } }
+    public float MoveSpeed { get { return _moveSpeed; } }
+    public float SprintSpeed { get { return _sprintSpeed; } } 
+    public float MoveInputX { get { return _moveInput.x; } }
+    public float AppliedMovementX { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
+    public float MoveInputY { get { return _moveInput.y; } }
+    public float AppliedMovementZ { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
     public bool IsJumpPressed { get { return _isJumpPressed; } }
+    public bool IsWalkPressed { get { return _isWalkPressed; } }
+    public bool isRunPressed { get { return _isRunPressed; } }
+    public Vector3 Velocity { get { return _velocity; } }
     public float VelocityY { get { return _velocity.y; } set { _velocity.y = value; } }
     public float JumpHeight { get { return _jumpHeight; } }
     public float Gravity { get { return _gravity; }  }
@@ -66,17 +78,19 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        _currentState.UpdateState();
+        HandleMovement();
+        _currentState.UpdateStates();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        _moveInput = context.performed ? context.ReadValue<Vector2>() : Vector2.zero;
+        _moveInput = context.ReadValue<Vector2>();
+        _isWalkPressed = _moveInput.x != 0 || _moveInput.y != 0;
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        _currentSpeed = context.performed ? _sprintSpeed : _moveSpeed;
+        _isRunPressed = context.ReadValueAsButton();
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -86,13 +100,13 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void LateUpdate()
     {
-        HandleMovement();
-        ApplyGravity();
+        //HandleMovement();
+        //ApplyGravity();
     }
 
     private void HandleMovement()
     {
-        Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;
+        Vector3 inputDirection = new Vector3(_appliedMovement.x, 0f, _appliedMovement.y).normalized;
 
         if (inputDirection.magnitude >= 0.1f)
         {
@@ -104,7 +118,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
             _characterController.Move(moveDir.normalized * _currentSpeed * Time.deltaTime);
         }
     }
-
+    /*
     private void ApplyGravity()
     {
         if (_characterController.isGrounded && _velocity.y < 0)
@@ -115,4 +129,5 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _velocity.y += _gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }
+    */
 }

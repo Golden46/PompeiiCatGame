@@ -1,5 +1,6 @@
 {
-    "name": "CatInputActions",
+    "version": 1,
+    "name": "PlayerInputActions",
     "maps": [
         {
             "name": "Player",

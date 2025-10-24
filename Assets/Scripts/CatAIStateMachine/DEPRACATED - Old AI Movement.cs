@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
-
+/*
 public class CatAIMovement : MonoBehaviour
 {
     [SerializeField] private Transform[] PatrolPoints;
@@ -11,7 +10,6 @@ public class CatAIMovement : MonoBehaviour
     private NavMeshAgent _agent;
     private float _stoppingDistance = 0.5f;
     private Transform _currentTarget;
-
 
     private void Awake()
     {
@@ -52,3 +50,4 @@ public class CatAIMovement : MonoBehaviour
         }
     }
 }
+*/

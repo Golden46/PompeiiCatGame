@@ -16,28 +16,10 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Scroll",
-                    "type": "Value",
-                    "id": "cd41378b-7c31-4cd7-9d7d-b703de6f15a8",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "RightClick",
-                    "type": "Button",
-                    "id": "894ad5a6-5655-4a8f-b276-c9000796ad3a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Sprint",
                     "type": "Button",
                     "id": "83f8561e-44df-4bed-bb44-a670b7a4df5d",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -107,28 +89,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "f7b965c4-0e3b-45b2-8ccb-4854d57cd521",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Scroll",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0e992113-e9bc-4ec2-9ba0-82d1fb0c5bc9",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "RightClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

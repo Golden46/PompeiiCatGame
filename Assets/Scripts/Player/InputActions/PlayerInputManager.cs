@@ -24,11 +24,6 @@ public class CatInputManager : MonoBehaviour
         PlayerInputActions.Player.Sprint.canceled += ctx => PlayerControllerStateMachine.Instance.OnSprint(ctx);
         PlayerInputActions.Player.Jump.performed += ctx => PlayerControllerStateMachine.Instance.OnJump(ctx);
         PlayerInputActions.Player.Jump.canceled += ctx => PlayerControllerStateMachine.Instance.OnJump(ctx);
-
-        // Camera
-        PlayerInputActions.Player.Scroll.performed += CatCameraController.Instance.OnZoom;
-        PlayerInputActions.Player.RightClick.performed += CatCameraController.Instance.OnRightClick;
-        PlayerInputActions.Player.RightClick.canceled += CatCameraController.Instance.OnRightClickCanceled;
     }
 
     private void OnDisable()
@@ -40,12 +35,6 @@ public class CatInputManager : MonoBehaviour
         PlayerInputActions.Player.Sprint.canceled -= PlayerControllerStateMachine.Instance.OnSprint;
         PlayerInputActions.Player.Jump.performed -= PlayerControllerStateMachine.Instance.OnJump;
         PlayerInputActions.Player.Jump.canceled -= PlayerControllerStateMachine.Instance.OnJump;
-
-
-        // Camera
-        PlayerInputActions.Player.Scroll.performed -= CatCameraController.Instance.OnZoom;
-        PlayerInputActions.Player.RightClick.performed -= CatCameraController.Instance.OnRightClick;
-        PlayerInputActions.Player.RightClick.canceled -= CatCameraController.Instance.OnRightClickCanceled;
 
         PlayerInputActions.Player.Disable();
     }

@@ -56,7 +56,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public bool IsWalkPressed { get { return _isWalkPressed; } }
     public bool isRunPressed { get { return _isRunPressed; } }
     public Vector3 Velocity { get { return _velocity; } }
-    public float VelocityY { get { return _velocity.y; } set { _velocity.y = value; } }
+    public float VelocityY { get { return Velocity.y; } set { _velocity.y = value; } }
     public float JumpHeight { get { return _jumpHeight; } }
     public float Gravity { get { return _gravity; }  }
 
@@ -74,11 +74,15 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _states = new PlayerControllerStateFactory(this);
         _currentState = _states.Grounded();
         _currentState.EnterState();
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
         HandleMovement();
+        ApplyGravity();
         _currentState.UpdateStates();
     }
 
@@ -98,12 +102,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _isJumpPressed = context.ReadValueAsButton();
     }
 
-    private void LateUpdate()
-    {
-        //HandleMovement();
-        //ApplyGravity();
-    }
-
     private void HandleMovement()
     {
         Vector3 inputDirection = new Vector3(_appliedMovement.x, 0f, _appliedMovement.y).normalized;
@@ -118,7 +116,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
             _characterController.Move(moveDir.normalized * _currentSpeed * Time.deltaTime);
         }
     }
-    /*
+    
     private void ApplyGravity()
     {
         if (_characterController.isGrounded && _velocity.y < 0)
@@ -129,5 +127,5 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _velocity.y += _gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }
-    */
+    
 }

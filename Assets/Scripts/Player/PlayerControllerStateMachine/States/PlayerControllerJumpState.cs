@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class PlayerControllerJumpState : PlayerControllerBaseState
 {
-    public PlayerControllerJumpState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory catAIStateFactory)
-    : base(currentContext, catAIStateFactory) {
+    public PlayerControllerJumpState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory playerControllerStateFactory)
+    : base(currentContext, playerControllerStateFactory) {
         _isRootState = true;
         InitializeSubState();
     }
 
     public override void EnterState() {
         Debug.Log("Jump");
+        _ctx.CharacterController.center = new Vector3(_ctx.CharacterController.center.x, _ctx.CharacterController.center.y * -1 * 2, _ctx.CharacterController.center.z);
         _ctx.VelocityY = Mathf.Sqrt(_ctx.JumpHeight * -2f * _ctx.Gravity); }
 
     public override void UpdateState() 
-    { 
+    {
         CheckSwitchStates(); 
-        ApplyGravity();
     }
 
     public override void ExitState() { }
@@ -24,6 +24,7 @@ public class PlayerControllerJumpState : PlayerControllerBaseState
     {
         if (_ctx.CharacterController.isGrounded)
         {
+            _ctx.CharacterController.center = new Vector3(_ctx.CharacterController.center.x, _ctx.CharacterController.center.y * -1 / 2, _ctx.CharacterController.center.z);
             SwitchState(_factory.Grounded());
         }
     }
@@ -42,16 +43,5 @@ public class PlayerControllerJumpState : PlayerControllerBaseState
         {
             SetSubState(_factory.Run());
         }
-    }
-
-    private void ApplyGravity()
-    {
-        if (_ctx.CharacterController.isGrounded && _ctx.VelocityY < 0)
-        {
-            _ctx.VelocityY = -2f;
-        }
-
-        _ctx.VelocityY += _ctx.Gravity * Time.deltaTime;
-        _ctx.CharacterController.Move(_ctx.Velocity * Time.deltaTime);
     }
 }

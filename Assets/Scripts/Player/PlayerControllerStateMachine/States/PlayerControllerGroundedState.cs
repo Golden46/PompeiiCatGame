@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerControllerGroundedState : PlayerControllerBaseState
 {
-    public PlayerControllerGroundedState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory catAIStateFactory)
-    : base(currentContext, catAIStateFactory) { 
+    public PlayerControllerGroundedState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory playerControllerStateFactory)
+    : base(currentContext, playerControllerStateFactory) { 
         _isRootState = true;
         InitializeSubState();
     }

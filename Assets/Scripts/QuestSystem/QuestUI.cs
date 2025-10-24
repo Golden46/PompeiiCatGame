@@ -5,6 +5,7 @@ public class QuestUI : MonoBehaviour
 {
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questDescText;
+    public TextMeshProUGUI questObjText;
 
     private QuestManager questManager;
 
@@ -14,12 +15,15 @@ public class QuestUI : MonoBehaviour
         UpdateQuestList();
     }
 
-    void UpdateQuestList()
+    public void UpdateQuestList()
     {
-        foreach (Quest quest in questManager.GetActiveQuests())
-        {
-            questTitleText.text = quest.title;
-            questDescText.text = quest.description;
+        Quest quest = questManager.GetActiveQuests();
+        questTitleText.text = quest.title;
+        questDescText.text = quest.description;
+
+        questObjText.text = "";
+        foreach (QuestObjective obj in quest.objectives) {
+            questObjText.text += $"{obj.objectiveDescription}\n";
         }
     }
 }

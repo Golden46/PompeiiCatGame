@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BakeryQuest
   m_EditorClassIdentifier: 
   title: Numerus Pistoris
-  description: Gather materials to bake the berad
+  description: Bake the bread
   isCompleted: 0
   objectives:
   - {fileID: 11400000, guid: f2a80bf34e688214ba84f494280b3822, type: 2}

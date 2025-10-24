@@ -127,5 +127,11 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _velocity.y += _gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        CatAIStateMachine triggerQuest = other.GetComponent<StartInteract>().cat.GetComponent<CatAIStateMachine>();
+        Debug.Log(triggerQuest);
+        triggerQuest.StartQuest(other.GetComponent<StartInteract>().catQuest);
+    }
 }

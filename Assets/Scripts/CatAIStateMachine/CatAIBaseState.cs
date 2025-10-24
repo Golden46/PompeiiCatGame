@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class CatAIBaseState
 {
     protected CatAIStateMachine _ctx;

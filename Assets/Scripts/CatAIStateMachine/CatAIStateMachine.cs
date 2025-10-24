@@ -12,6 +12,7 @@ public class CatAIStateMachine : MonoBehaviour
     private float _stoppingDistance = 0.5f;
     private PatrolPoint _currentTarget;
 
+    private Quest _currentQuest;
 
     // state variables
     private CatAIBaseState _currentState;
@@ -19,6 +20,7 @@ public class CatAIStateMachine : MonoBehaviour
 
     // getters and setters
     public CatAIBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public Quest CurrentQuest { get { return _currentQuest; } }
     public PatrolPoint[] PatrolPointsArray { get { return PatrolPoints; } }
     public PatrolPoint CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
     public NavMeshAgent Agent { get { return _agent; } }
@@ -51,6 +53,15 @@ public class CatAIStateMachine : MonoBehaviour
         {
             if (point != null) Gizmos.DrawSphere(point.point.position, GizmoRadius);
         }
+    }
+
+    public void StartQuest(Quest quest)
+    {
+        _currentQuest = quest;
+
+        _currentState.ExitState();
+        _currentState = _states.StartQuest();
+        _currentState.EnterState();
     }
 }
 

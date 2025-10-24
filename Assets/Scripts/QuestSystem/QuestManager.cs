@@ -3,28 +3,34 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    public List<Quest> quests = new List<Quest>();
-    void Start()
-    {
-        foreach (var quest in quests)
-        {
-            foreach (var objective in quest.objectives)
-            {
-                if (!objective.isCompleted)
-                {
+    public QuestUI questUI;
 
-                }
-            }
-        }
+    public Quest activeQuest;
+    public bool isActive;
+
+    private void Start()
+    {
+        questUI = GetComponent<QuestUI>();
+    }
+
+    public void StartQuest(Quest quest)
+    {
+        if (isActive) return;
+
+        activeQuest = quest;
+        isActive = true;
+        questUI.UpdateQuestList();
     }
 
     public void CompleteQuest(Quest quest)
     {
         quest.isCompleted = true;
+        isActive = false;
         Debug.Log("Quest completed: " + quest.title);
     }
-    public List<Quest> GetActiveQuests()
+
+    public Quest GetActiveQuests()
     {
-        return quests.FindAll(q => !q.isCompleted);
+        return activeQuest;
     }
 }

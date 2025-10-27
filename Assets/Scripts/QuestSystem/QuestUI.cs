@@ -12,7 +12,6 @@ public class QuestUI : MonoBehaviour
     void Start()
     {
         questManager = FindAnyObjectByType<QuestManager>();
-        UpdateQuestList();
     }
 
     public void UpdateQuestList()

@@ -20,10 +20,16 @@ public class CatInputManager : MonoBehaviour
         // Movement
         PlayerInputActions.Player.Movement.performed += ctx => PlayerControllerStateMachine.Instance.OnMove(ctx);
         PlayerInputActions.Player.Movement.canceled += ctx => PlayerControllerStateMachine.Instance.OnMove(ctx);
+
         PlayerInputActions.Player.Sprint.performed += ctx => PlayerControllerStateMachine.Instance.OnSprint(ctx);
         PlayerInputActions.Player.Sprint.canceled += ctx => PlayerControllerStateMachine.Instance.OnSprint(ctx);
+
         PlayerInputActions.Player.Jump.performed += ctx => PlayerControllerStateMachine.Instance.OnJump(ctx);
         PlayerInputActions.Player.Jump.canceled += ctx => PlayerControllerStateMachine.Instance.OnJump(ctx);
+
+        // Interaction
+        PlayerInputActions.Player.Echo.performed += ctx => PlayerControllerStateMachine.Instance.OnEcho(ctx);
+        PlayerInputActions.Player.Meow.performed += ctx => PlayerControllerStateMachine.Instance.OnMeow(ctx);
     }
 
     private void OnDisable()
@@ -31,10 +37,16 @@ public class CatInputManager : MonoBehaviour
         // Movement
         PlayerInputActions.Player.Movement.performed -= PlayerControllerStateMachine.Instance.OnMove;
         PlayerInputActions.Player.Movement.canceled -= PlayerControllerStateMachine.Instance.OnMove;
+
         PlayerInputActions.Player.Sprint.performed -= PlayerControllerStateMachine.Instance.OnSprint;
         PlayerInputActions.Player.Sprint.canceled -= PlayerControllerStateMachine.Instance.OnSprint;
+
         PlayerInputActions.Player.Jump.performed -= PlayerControllerStateMachine.Instance.OnJump;
         PlayerInputActions.Player.Jump.canceled -= PlayerControllerStateMachine.Instance.OnJump;
+
+        // Interaction
+        PlayerInputActions.Player.Echo.performed -= PlayerControllerStateMachine.Instance.OnEcho;
+        PlayerInputActions.Player.Meow.performed -= PlayerControllerStateMachine.Instance.OnMeow;
 
         PlayerInputActions.Player.Disable();
     }

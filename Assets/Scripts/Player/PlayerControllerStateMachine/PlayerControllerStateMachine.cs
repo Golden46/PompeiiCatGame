@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +30,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private bool _isJumpPressed;
     private bool _isWalkPressed;
     private bool _isRunPressed;
+
+    // Particles
+    [SerializeField] private GameObject _echoSensePrefab;
 
     // Camera settings
     [Header("Camera")]
@@ -102,6 +107,17 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _isJumpPressed = context.ReadValueAsButton();
     }
 
+    public void OnEcho(InputAction.CallbackContext context)
+    {
+        if (_currentState.GetType() == typeof(PlayerControllerGroundedState))
+        Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
+    }
+
+    public void OnMeow(InputAction.CallbackContext context)
+    {
+        Debug.Log("Meow");
+    }
+
     private void HandleMovement()
     {
         Vector3 inputDirection = new Vector3(_appliedMovement.x, 0f, _appliedMovement.y).normalized;
@@ -131,7 +147,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         CatAIStateMachine triggerQuest = other.GetComponent<StartInteract>().cat.GetComponent<CatAIStateMachine>();
-        Debug.Log(triggerQuest);
         triggerQuest.StartQuest(other.GetComponent<StartInteract>().catQuest);
     }
 }

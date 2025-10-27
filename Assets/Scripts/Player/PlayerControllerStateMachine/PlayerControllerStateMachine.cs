@@ -110,7 +110,10 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public void OnEcho(InputAction.CallbackContext context)
     {
         if (_currentState.GetType() == typeof(PlayerControllerGroundedState))
-        Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
+        {
+            Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
+            AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
+        }
     }
 
     public void OnMeow(InputAction.CallbackContext context)

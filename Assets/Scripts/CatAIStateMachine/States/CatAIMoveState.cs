@@ -8,11 +8,14 @@ public class CatAIMoveState : CatAIBaseState
 
     private float _timer = 0.0f;
     private bool _animating = false;
+    private PatrolPoint newTarget;
 
     public override void EnterState(){ MoveToDestination(); }
 
     public override void UpdateState()
     {
+        if (_ctx.InQuestLocation) MoveToDestination();
+
         if (_ctx.Agent.remainingDistance <= _ctx.StoppingDistance) Animate();
         CheckSwitchStates(); 
     }
@@ -26,11 +29,17 @@ public class CatAIMoveState : CatAIBaseState
         _timer = 0.0f;
         _animating = false;
 
-        if (_ctx.PatrolPointsArray.Length == 0) return;
+        if (_ctx.InQuestLocation)
+        {
+            newTarget = _ctx.QuestPoint;
+        }
+        else
+        {
+            if (_ctx.PatrolPointsArray.Length == 0) return;
 
-        PatrolPoint newTarget;
-        do newTarget = _ctx.PatrolPointsArray[Random.Range(0, _ctx.PatrolPointsArray.Length)];
-        while (newTarget == _ctx.CurrentTarget && _ctx.PatrolPointsArray.Length > 1);
+            do newTarget = _ctx.PatrolPointsArray[Random.Range(0, _ctx.PatrolPointsArray.Length)];
+            while (newTarget == _ctx.CurrentTarget && _ctx.PatrolPointsArray.Length > 1);
+        }
 
         _ctx.CurrentTarget = newTarget;
         _ctx.Agent.SetDestination(_ctx.CurrentTarget.point.position);
@@ -43,10 +52,18 @@ public class CatAIMoveState : CatAIBaseState
             _ctx.Animator.SetTrigger(_ctx.CurrentTarget.animationTrigger);
             _animating = true;
         }
-        _timer += Time.deltaTime;
-        if (_timer >= _ctx.CurrentTarget.animationDuration)
+
+        if (_ctx.InQuestLocation)
         {
-            MoveToDestination();
+
+        }
+        else
+        {
+            _timer += Time.deltaTime;
+            if (_timer >= _ctx.CurrentTarget.animationDuration)
+            {
+                MoveToDestination();
+            }
         }
     }
 }

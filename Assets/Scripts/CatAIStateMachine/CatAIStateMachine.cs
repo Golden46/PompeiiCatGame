@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class CatAIStateMachine : MonoBehaviour
 {
-    [SerializeField] private PatrolPoint[] PatrolPoints;
+    [SerializeField] private PatrolPoint[] patrolPoints;
     [SerializeField] private PatrolPoint questPoint;
     [SerializeField] private Animator animator;
     [SerializeField] private Color GizmoColor = Color.yellow;
@@ -13,7 +13,7 @@ public class CatAIStateMachine : MonoBehaviour
     private float _stoppingDistance = 0.5f;
     private PatrolPoint _currentTarget;
 
-    private Quest _currentQuest;
+    private bool _inQuestLocation = false;
 
     // state variables
     private CatAIBaseState _currentState;
@@ -21,12 +21,13 @@ public class CatAIStateMachine : MonoBehaviour
 
     // getters and setters
     public CatAIBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-    public Quest CurrentQuest { get { return _currentQuest; } }
-    public PatrolPoint[] PatrolPointsArray { get { return PatrolPoints; } }
+    public PatrolPoint[] PatrolPointsArray { get { return patrolPoints; } }
+    public PatrolPoint QuestPoint { get { return questPoint; } }
     public PatrolPoint CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
     public NavMeshAgent Agent { get { return _agent; } }
     public float StoppingDistance { get { return _stoppingDistance; } }
     public Animator Animator { get { return animator; } }
+    public bool InQuestLocation { get { return _inQuestLocation; } set { _inQuestLocation = value; } }
 
     private void Awake()
     {
@@ -47,11 +48,11 @@ public class CatAIStateMachine : MonoBehaviour
     // Debug for patrol points
     private void OnDrawGizmos()
     {
-        if (PatrolPoints == null || PatrolPoints.Length == 0) return;
+        if (patrolPoints == null || patrolPoints.Length == 0) return;
 
         Gizmos.color = GizmoColor;
 
-        foreach (PatrolPoint point in PatrolPoints)
+        foreach (PatrolPoint point in patrolPoints)
         {
             if (point != null) Gizmos.DrawSphere(point.point.position, GizmoRadius);
         }
@@ -59,13 +60,9 @@ public class CatAIStateMachine : MonoBehaviour
         Gizmos.DrawSphere(questPoint.point.position, GizmoRadius);
     }
 
-    public void StartQuest(Quest quest)
+    public void TriggerQuestStart()
     {
-        _currentQuest = quest;
-
-        _currentState.ExitState();
-        _currentState = _states.StartQuest();
-        _currentState.EnterState();
+        _inQuestLocation = true;
     }
 }
 

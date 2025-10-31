@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,6 +43,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     // Components
     private CharacterController _characterController;
+    private CatAIStateMachine _catAIStateMachine;
+    private QuestManager _questManager;
+    private Quest _currentTargetableQuest;
 
     // State variables
     private PlayerControllerBaseState _currentState;
@@ -73,6 +77,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         // Setup Components / Variables
         _characterController = GetComponent<CharacterController>();
+        _questManager = FindAnyObjectByType<QuestManager>();
         _currentSpeed = _moveSpeed;
 
         // Setup State
@@ -80,6 +85,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _currentState = _states.Idle();
         _currentState.EnterState();
 
+        // Lock cursor
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -109,8 +115,11 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnEcho(InputAction.CallbackContext context)
     {
+        if (_catAIStateMachine == null || _catAIStateMachine.InQuestLocation == false) return;
+
         Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
         AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
+        _questManager.StartQuest(_currentTargetableQuest);
     }
 
     public void OnMeow(InputAction.CallbackContext context)
@@ -146,7 +155,22 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CatAIStateMachine triggerQuest = other.GetComponent<StartInteract>().cat.GetComponent<CatAIStateMachine>();
-        triggerQuest.StartQuest(other.GetComponent<StartInteract>().catQuest);
+        if (other.tag == "QuestArea")
+        {
+            StartInteract interactObject = other.GetComponent<StartInteract>();
+
+            _currentTargetableQuest = interactObject.catQuest;
+
+            _catAIStateMachine = interactObject.cat.GetComponent<CatAIStateMachine>();
+            _catAIStateMachine.InQuestLocation = true;
+        }
+        //triggerQuest.StartQuest(other.GetComponent<StartInteract>().catQuest);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _currentTargetableQuest = null;
+        _catAIStateMachine = null;
+        if (other.tag == "QuestArea") _catAIStateMachine.InQuestLocation = false;
     }
 }

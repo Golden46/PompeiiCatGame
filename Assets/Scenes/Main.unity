@@ -1753,7 +1753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 334978446}
   m_Layer: 0
-  m_Name: Patrol Point (8)
+  m_Name: Patrol Point (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2472,16 +2472,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b2188944c80e04a8f8b8dd0b721315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PatrolPoints:
+  patrolPoints:
   - point: {fileID: 589651466}
     animationTrigger: EarTwitch
-    animationDuration: 1.5
+    animationDuration: 2
   - point: {fileID: 1690442480}
     animationTrigger: EarTwitch
-    animationDuration: 1.5
+    animationDuration: 2
   - point: {fileID: 334978446}
     animationTrigger: EarTwitch
-    animationDuration: 1.5
+    animationDuration: 2
   questPoint:
     point: {fileID: 1053489500}
     animationTrigger: EarTwitch
@@ -6969,7 +6969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690442480}
   m_Layer: 0
-  m_Name: Patrol Point (7)
+  m_Name: Patrol Point (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

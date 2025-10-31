@@ -169,8 +169,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.tag == "QuestArea") _catAIStateMachine.InQuestLocation = false;
+
         _currentTargetableQuest = null;
         _catAIStateMachine = null;
-        if (other.tag == "QuestArea") _catAIStateMachine.InQuestLocation = false;
     }
 }

@@ -9,7 +9,5 @@ public class CatAIStateFactory
 
     public CatAIBaseState Move(){ return new CatAIMoveState(_context, this); }
 
-    public CatAIBaseState Animation() { return new CatAIAnimationState(_context, this);  }
-
     public CatAIBaseState StartQuest() { return new CatAIStartQuestState(_context, this); }
 }

@@ -77,7 +77,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         // Setup State
         _states = new PlayerControllerStateFactory(this);
-        _currentState = _states.Grounded();
+        _currentState = _states.Idle();
         _currentState.EnterState();
 
         Cursor.visible = false;
@@ -86,9 +86,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void Update()
     {
+        _currentState.UpdateState();
         HandleMovement();
         ApplyGravity();
-        _currentState.UpdateStates();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -109,11 +109,8 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnEcho(InputAction.CallbackContext context)
     {
-        if (_currentState.GetType() == typeof(PlayerControllerGroundedState))
-        {
-            Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
-            AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
-        }
+        Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
+        AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
     }
 
     public void OnMeow(InputAction.CallbackContext context)

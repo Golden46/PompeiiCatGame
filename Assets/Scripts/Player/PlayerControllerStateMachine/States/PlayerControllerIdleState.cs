@@ -18,15 +18,9 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
 
     public override void CheckSwitchStates() 
     {
-        if (_ctx.IsWalkPressed && _ctx.isRunPressed)
+        if (_ctx.IsWalkPressed)
         {
-            SwitchState(_factory.Run());
-        }
-        else if (_ctx.IsWalkPressed)
-        {
-            SwitchState(_factory.Walk());
+            SwitchState(_factory.Move());
         }
     }
-
-    public override void InitializeSubState() { }
 }

@@ -10,7 +10,5 @@ public class CatAIStartQuestState : CatAIBaseState
 
     public override void ExitState() { }
 
-    public override void InitializeSubState() { }
-
     public override void CheckSwitchStates() { }
 }

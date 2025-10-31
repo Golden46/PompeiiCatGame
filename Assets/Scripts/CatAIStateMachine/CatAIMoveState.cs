@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class CatAIMoveState : CatAIBaseState
@@ -7,11 +8,13 @@ public class CatAIMoveState : CatAIBaseState
 
     public override void EnterState(){ ChooseNewDestination(); }
 
-    public override void UpdateState(){ CheckSwitchStates(); }
+    public override void UpdateState()
+    {
+        Debug.Log("Move");
+        CheckSwitchStates(); 
+    }
 
     public override void ExitState(){}
-
-    public override void InitializeSubState(){}
 
     public override void CheckSwitchStates(){ if (_ctx.Agent.remainingDistance <= _ctx.StoppingDistance) SwitchState(_factory.Animation()); }
 

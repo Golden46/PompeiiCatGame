@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class CatAIStateMachine : MonoBehaviour
 {
     [SerializeField] private PatrolPoint[] PatrolPoints;
+    [SerializeField] private PatrolPoint questPoint;
     [SerializeField] private Animator animator;
     [SerializeField] private Color GizmoColor = Color.yellow;
     [SerializeField] private float GizmoRadius = 0.3f;
@@ -43,6 +44,7 @@ public class CatAIStateMachine : MonoBehaviour
         _currentState.UpdateState();
     }
 
+    // Debug for patrol points
     private void OnDrawGizmos()
     {
         if (PatrolPoints == null || PatrolPoints.Length == 0) return;
@@ -53,6 +55,8 @@ public class CatAIStateMachine : MonoBehaviour
         {
             if (point != null) Gizmos.DrawSphere(point.point.position, GizmoRadius);
         }
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(questPoint.point.position, GizmoRadius);
     }
 
     public void StartQuest(Quest quest)

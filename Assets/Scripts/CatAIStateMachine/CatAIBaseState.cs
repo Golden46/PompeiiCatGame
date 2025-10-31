@@ -18,10 +18,6 @@ public abstract class CatAIBaseState
 
     public abstract void CheckSwitchStates();
 
-    public abstract void InitializeSubState();
-
-    void UpdateStates(){}
-
     protected void SwitchState(CatAIBaseState newState)
     {
         ExitState(); // Exit current state
@@ -29,8 +25,4 @@ public abstract class CatAIBaseState
 
         _ctx.CurrentState = newState;
     }
-
-    protected void SetSuperState(){}
-
-    protected void SetSubState(){}
 }

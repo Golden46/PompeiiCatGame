@@ -24,7 +24,5 @@ public class CatAIAnimationState : CatAIBaseState
 
     public override void ExitState() { }
 
-    public override void InitializeSubState() { }
-
     public override void CheckSwitchStates() { SwitchState(_factory.Move()); }
 }

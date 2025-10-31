@@ -15,7 +15,9 @@ public class PlayerControllerGroundedState : PlayerControllerBaseState
     public override void ExitState() { }
 
     public override void CheckSwitchStates() 
-    { 
+    {
+        Debug.Log("Grounded");
+
         if (_ctx.IsJumpPressed)
         {
             SwitchState(_factory.Jump());

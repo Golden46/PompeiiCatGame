@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -46,10 +42,14 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private CatAIStateMachine _catAIStateMachine;
     private QuestManager _questManager;
     private Quest _currentTargetableQuest;
+    private GameObject[] _holoStructure;
 
     // State variables
     private PlayerControllerBaseState _currentState;
     private PlayerControllerStateFactory _states;
+
+    // Quest interaction stuff
+    private StartInteract interactObject = null;
 
     // Getters and Setters
     public PlayerControllerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
@@ -120,6 +120,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
         Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
         AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
         _questManager.StartQuest(_currentTargetableQuest);
+        interactObject.Rebuild();
     }
 
     public void OnMeow(InputAction.CallbackContext context)
@@ -157,12 +158,14 @@ public class PlayerControllerStateMachine : MonoBehaviour
     {
         if (other.tag == "QuestArea")
         {
-            StartInteract interactObject = other.GetComponent<StartInteract>();
+            interactObject = other.GetComponent<StartInteract>();
 
             _currentTargetableQuest = interactObject.catQuest;
 
             _catAIStateMachine = interactObject.cat.GetComponent<CatAIStateMachine>();
             _catAIStateMachine.InQuestLocation = true;
+
+            _holoStructure = interactObject.holoStructure;
         }
         //triggerQuest.StartQuest(other.GetComponent<StartInteract>().catQuest);
     }
@@ -173,5 +176,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         _currentTargetableQuest = null;
         _catAIStateMachine = null;
+        _holoStructure = null;
     }
 }

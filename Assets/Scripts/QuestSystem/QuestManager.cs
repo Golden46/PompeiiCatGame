@@ -2,10 +2,18 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
+    public static QuestManager Instance { get; private set; }
+
     public QuestUI questUI;
 
     public Quest activeQuest;
     public bool isActive;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
+    }
 
     private void Start()
     {

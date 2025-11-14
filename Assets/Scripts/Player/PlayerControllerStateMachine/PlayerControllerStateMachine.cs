@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,9 +33,10 @@ public class PlayerControllerStateMachine : MonoBehaviour
     [SerializeField] private GameObject _echoSensePrefab;
 
     // Camera settings
-    [Header("Camera")]
+    [Header("Camera Properties")]
     [SerializeField] private float _rotationSmoothTime = 0.1f;
     [SerializeField] private Transform _cameraTransform;
+    private CinemachineVirtualCamera _currentQuestCamera;
     private float _rotationVelocity;
 
     // Components
@@ -77,7 +79,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         // Setup Components / Variables
         _characterController = GetComponent<CharacterController>();
-        _questManager = FindAnyObjectByType<QuestManager>();
+        _questManager = QuestManager.Instance;
         _currentSpeed = _moveSpeed;
 
         // Setup State
@@ -115,7 +117,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnEcho(InputAction.CallbackContext context)
     {
-        if (_catAIStateMachine == null || _catAIStateMachine.InQuestLocation == false) return;
+        if (_catAIStateMachine == null || _questManager.isActive) return;
 
         Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
         AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
@@ -161,6 +163,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
             interactObject = other.GetComponent<StartInteract>();
 
             _currentTargetableQuest = interactObject.catQuest;
+            _currentQuestCamera = interactObject.questCamera;
 
             _catAIStateMachine = interactObject.cat.GetComponent<CatAIStateMachine>();
             _catAIStateMachine.InQuestLocation = true;
@@ -175,6 +178,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
         if (other.tag == "QuestArea") _catAIStateMachine.InQuestLocation = false;
 
         _currentTargetableQuest = null;
+        _currentQuestCamera = null;
         _catAIStateMachine = null;
         _holoStructure = null;
     }

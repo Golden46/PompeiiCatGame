@@ -1,4 +1,5 @@
 using UnityEngine;
+using Cinemachine;
 using System.Collections;
 
 public class StartInteract : MonoBehaviour
@@ -8,11 +9,24 @@ public class StartInteract : MonoBehaviour
     public GameObject cat;
     public Quest catQuest;
 
+    [SerializeField] private CinemachineBrain cameraBrain;
+    public CinemachineVirtualCamera questCamera;
+
     private int ClipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
+
+    private void Start()
+    {
+        cameraBrain = FindAnyObjectByType<CinemachineBrain>();
+        if (cameraBrain != null)
+        {
+            cameraBrain.m_CameraActivatedEvent.AddListener(OnCameraSwitch);
+        }
+    }
 
     public void Rebuild()
     {
-        float duration = 6f;
+        questCamera.gameObject.SetActive(true);
+        float duration = 9.5f;
         float startHeight = 0f;
         float endHeight = 2.5f;
         foreach (GameObject structure in holoStructure)
@@ -25,7 +39,7 @@ public class StartInteract : MonoBehaviour
     private IEnumerator VerticalRestoration(Renderer targetRenderer, float duration, float startHeight, float endHeight)
     {
         targetRenderer.material = new Material(targetRenderer.material);
-
+        
         float elapsedTime = 0f;
 
         targetRenderer.material.SetFloat(ClipHeightPropertyID, startHeight);
@@ -40,6 +54,12 @@ public class StartInteract : MonoBehaviour
             yield return null;
         }
 
+        questCamera.gameObject.SetActive(false);
         targetRenderer.material.SetFloat(ClipHeightPropertyID, endHeight);
+    }
+
+    private void OnCameraSwitch(ICinemachineCamera fromCamera, ICinemachineCamera toCamera)
+    {
+        Debug.Log("yes");
     }
 }

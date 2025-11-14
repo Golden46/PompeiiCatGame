@@ -3,6 +3,7 @@ using UnityEngine;
 public class CatInputManager : MonoBehaviour
 {
     public PlayerInputActions PlayerInputActions;
+    private PlayerControllerStateMachine playerStateMachine;
 
     private void Awake()
     {
@@ -17,36 +18,38 @@ public class CatInputManager : MonoBehaviour
     // This is in Start not OnEnable because of the order in which the other scripts are enabled as instances.
     private void Start()
     {
+        playerStateMachine = PlayerControllerStateMachine.Instance;
+
         // Movement
-        PlayerInputActions.Player.Movement.performed += ctx => PlayerControllerStateMachine.Instance.OnMove(ctx);
-        PlayerInputActions.Player.Movement.canceled += ctx => PlayerControllerStateMachine.Instance.OnMove(ctx);
+        PlayerInputActions.Player.Movement.performed += ctx => playerStateMachine.OnMove(ctx);
+        PlayerInputActions.Player.Movement.canceled += ctx => playerStateMachine.OnMove(ctx);
 
-        PlayerInputActions.Player.Sprint.performed += ctx => PlayerControllerStateMachine.Instance.OnSprint(ctx);
-        PlayerInputActions.Player.Sprint.canceled += ctx => PlayerControllerStateMachine.Instance.OnSprint(ctx);
+        PlayerInputActions.Player.Sprint.performed += ctx => playerStateMachine.OnSprint(ctx);
+        PlayerInputActions.Player.Sprint.canceled += ctx => playerStateMachine.OnSprint(ctx);
 
-        PlayerInputActions.Player.Jump.performed += ctx => PlayerControllerStateMachine.Instance.OnJump(ctx);
-        PlayerInputActions.Player.Jump.canceled += ctx => PlayerControllerStateMachine.Instance.OnJump(ctx);
+        PlayerInputActions.Player.Jump.performed += ctx => playerStateMachine.OnJump(ctx);
+        PlayerInputActions.Player.Jump.canceled += ctx => playerStateMachine.OnJump(ctx);
 
         // Interaction
-        PlayerInputActions.Player.Echo.performed += ctx => PlayerControllerStateMachine.Instance.OnEcho(ctx);
-        PlayerInputActions.Player.Meow.performed += ctx => PlayerControllerStateMachine.Instance.OnMeow(ctx);
+        PlayerInputActions.Player.Echo.performed += ctx => playerStateMachine.OnEcho(ctx);
+        PlayerInputActions.Player.Meow.performed += ctx => playerStateMachine.OnMeow(ctx);
     }
 
     private void OnDisable()
     {
         // Movement
-        PlayerInputActions.Player.Movement.performed -= PlayerControllerStateMachine.Instance.OnMove;
-        PlayerInputActions.Player.Movement.canceled -= PlayerControllerStateMachine.Instance.OnMove;
+        PlayerInputActions.Player.Movement.performed -= playerStateMachine.OnMove;
+        PlayerInputActions.Player.Movement.canceled -=playerStateMachine.OnMove;
 
-        PlayerInputActions.Player.Sprint.performed -= PlayerControllerStateMachine.Instance.OnSprint;
-        PlayerInputActions.Player.Sprint.canceled -= PlayerControllerStateMachine.Instance.OnSprint;
+        PlayerInputActions.Player.Sprint.performed -= playerStateMachine.OnSprint;
+        PlayerInputActions.Player.Sprint.canceled -= playerStateMachine.OnSprint;
 
-        PlayerInputActions.Player.Jump.performed -= PlayerControllerStateMachine.Instance.OnJump;
-        PlayerInputActions.Player.Jump.canceled -= PlayerControllerStateMachine.Instance.OnJump;
+        PlayerInputActions.Player.Jump.performed -= playerStateMachine.OnJump;
+        PlayerInputActions.Player.Jump.canceled -= playerStateMachine.OnJump;
 
         // Interaction
-        PlayerInputActions.Player.Echo.performed -= PlayerControllerStateMachine.Instance.OnEcho;
-        PlayerInputActions.Player.Meow.performed -= PlayerControllerStateMachine.Instance.OnMeow;
+        PlayerInputActions.Player.Echo.performed -= playerStateMachine.OnEcho;
+        PlayerInputActions.Player.Meow.performed -= playerStateMachine.OnMeow;
 
         PlayerInputActions.Player.Disable();
     }

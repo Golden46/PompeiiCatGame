@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: YeastObjective
   m_EditorClassIdentifier: 
   objectiveDescription: Gather yeast
-  isCompleted: 0
+  isCompleted: 1

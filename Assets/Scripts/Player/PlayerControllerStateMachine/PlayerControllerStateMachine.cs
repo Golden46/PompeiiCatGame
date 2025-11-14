@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -36,7 +37,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
     [Header("Camera Properties")]
     [SerializeField] private float _rotationSmoothTime = 0.1f;
     [SerializeField] private Transform _cameraTransform;
-    private CinemachineVirtualCamera _currentQuestCamera;
     private float _rotationVelocity;
 
     // Components
@@ -51,7 +51,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private PlayerControllerStateFactory _states;
 
     // Quest interaction stuff
-    private StartInteract interactObject = null;
+    private GetQuest interactObject = null;
 
     // Getters and Setters
     public PlayerControllerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
@@ -156,21 +156,29 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _characterController.Move(_velocity * Time.deltaTime);
     }
 
+    private void GetQuestObjects(Collider other)
+    {
+        interactObject = other.GetComponent<GetQuest>();
+
+        _currentTargetableQuest = interactObject.catQuest;
+
+        _catAIStateMachine = interactObject.cat.GetComponent<CatAIStateMachine>();
+        _catAIStateMachine.InQuestLocation = true;
+
+        _holoStructure = interactObject.holoStructure;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "QuestArea")
+        if (other.CompareTag("QuestArea"))
         {
-            interactObject = other.GetComponent<StartInteract>();
-
-            _currentTargetableQuest = interactObject.catQuest;
-            _currentQuestCamera = interactObject.questCamera;
-
-            _catAIStateMachine = interactObject.cat.GetComponent<CatAIStateMachine>();
-            _catAIStateMachine.InQuestLocation = true;
-
-            _holoStructure = interactObject.holoStructure;
+            GetQuestObjects(other);
         }
-        //triggerQuest.StartQuest(other.GetComponent<StartInteract>().catQuest);
+
+        if (other.CompareTag("QuestItem"))
+        {
+            other.GetComponent<ObjectInteract>().enabled = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -178,7 +186,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
         if (other.tag == "QuestArea") _catAIStateMachine.InQuestLocation = false;
 
         _currentTargetableQuest = null;
-        _currentQuestCamera = null;
         _catAIStateMachine = null;
         _holoStructure = null;
     }

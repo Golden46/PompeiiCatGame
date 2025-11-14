@@ -26,7 +26,24 @@ public class QuestManager : MonoBehaviour
 
         activeQuest = quest;
         isActive = true;
-        questUI.UpdateQuestList();
+        questUI.EnableQuestUI();
+    }
+
+    public void CompleteObjective(Quest quest, QuestObjective objective)
+    {
+        int completeCounter = 0;
+        foreach (QuestObjective obj in quest.objectives)
+        {
+            if (objective == obj)
+            {
+                obj.CompleteObjective();
+                questUI.UpdateQuestObjective(obj);
+            }
+
+            if (obj.isCompleted) completeCounter++;
+        }
+
+        if (completeCounter >= quest.objectives.Length) CompleteQuest(quest);
     }
 
     public void CompleteQuest(Quest quest)
@@ -36,7 +53,7 @@ public class QuestManager : MonoBehaviour
         Debug.Log("Quest completed: " + quest.title);
     }
 
-    public Quest GetActiveQuests()
+    public Quest GetActiveQuest()
     {
         return activeQuest;
     }

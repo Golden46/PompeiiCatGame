@@ -7,7 +7,6 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
 
     public override void EnterState() 
     { 
-        Debug.Log("Idle"); 
         _ctx.AppliedMovementX = 0;
         _ctx.AppliedMovementZ = 0;
     }

@@ -2,26 +2,16 @@ using UnityEngine;
 using Cinemachine;
 using System.Collections;
 
-public class StartInteract : MonoBehaviour
+public class GetQuest : MonoBehaviour
 {
     public GameObject[] holoStructure;
 
     public GameObject cat;
     public Quest catQuest;
 
-    [SerializeField] private CinemachineBrain cameraBrain;
     public CinemachineVirtualCamera questCamera;
 
     private int ClipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
-
-    private void Start()
-    {
-        cameraBrain = FindAnyObjectByType<CinemachineBrain>();
-        if (cameraBrain != null)
-        {
-            cameraBrain.m_CameraActivatedEvent.AddListener(OnCameraSwitch);
-        }
-    }
 
     public void Rebuild()
     {
@@ -56,10 +46,5 @@ public class StartInteract : MonoBehaviour
 
         questCamera.gameObject.SetActive(false);
         targetRenderer.material.SetFloat(ClipHeightPropertyID, endHeight);
-    }
-
-    private void OnCameraSwitch(ICinemachineCamera fromCamera, ICinemachineCamera toCamera)
-    {
-        Debug.Log("yes");
     }
 }

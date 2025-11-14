@@ -5,7 +5,7 @@ public class PlayerControllerMoveState : PlayerControllerBaseState
     public PlayerControllerMoveState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory playerControllerStateFactory)
     : base(currentContext, playerControllerStateFactory) { }
 
-    public override void EnterState() { Debug.Log("Walk"); }
+    public override void EnterState() { }
 
     public override void UpdateState() 
     {

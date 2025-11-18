@@ -8,6 +8,7 @@ public class QuestManager : MonoBehaviour
 
     public Quest activeQuest;
     public bool isActive;
+    private float completedObjs;
 
     private void Awake()
     {
@@ -25,25 +26,24 @@ public class QuestManager : MonoBehaviour
         if (isActive) return;
 
         activeQuest = quest;
+        completedObjs = 0;
         isActive = true;
         questUI.EnableQuestUI();
     }
 
     public void CompleteObjective(Quest quest, QuestObjective objective)
     {
-        int completeCounter = 0;
         foreach (QuestObjective obj in quest.objectives)
         {
             if (objective == obj)
             {
+                completedObjs++;
                 obj.CompleteObjective();
                 questUI.UpdateQuestObjective(obj);
             }
-
-            if (obj.isCompleted) completeCounter++;
         }
 
-        if (completeCounter >= quest.objectives.Length) CompleteQuest(quest);
+        if (completedObjs >= quest.objectives.Length) CompleteQuest(quest);
     }
 
     public void CompleteQuest(Quest quest)

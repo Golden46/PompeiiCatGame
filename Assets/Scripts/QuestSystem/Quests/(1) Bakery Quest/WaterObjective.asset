@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WaterObjective
   m_EditorClassIdentifier: 
   objectiveDescription: Gather water
-  isCompleted: 1
+  isCompleted: 0

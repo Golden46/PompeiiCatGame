@@ -71,6 +71,12 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public float JumpHeight { get { return _jumpHeight; } }
     public float Gravity { get { return _gravity; }  }
 
+    [Header("For RB Movement (WIP)")]
+    public float speed = 4.0f;
+    public CinemachineFreeLook cmFreeLook;
+    public Rigidbody rb;
+    public float rotateSpeed = 10.0f;
+
     private void Awake()
     {
         // Create singleton
@@ -79,6 +85,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         // Setup Components / Variables
         _characterController = GetComponent<CharacterController>();
+        //rb = GetComponent<Rigidbody>();
         _questManager = QuestManager.Instance;
         _currentSpeed = _moveSpeed;
 
@@ -97,6 +104,11 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _currentState.UpdateState();
         HandleMovement();
         ApplyGravity();
+    }
+
+    private void FixedUpdate()
+    {
+        //HandleMovement(); // For RB movement.
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -144,6 +156,17 @@ public class PlayerControllerStateMachine : MonoBehaviour
             _characterController.Move(moveDir.normalized * _currentSpeed * Time.deltaTime);
         }
     }
+
+    // Making a start to RB movement :/
+    /*
+    private void HandleMovement()
+    { 
+        Vector3 inputVector = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, transform.eulerAngles.z);
+        inputVector = transform.TransformDirection(inputVector);
+        rb.linearVelocity = inputVector * speed; 
+    }
+    */
     
     private void ApplyGravity()
     {

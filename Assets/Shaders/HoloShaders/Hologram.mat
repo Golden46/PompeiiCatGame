@@ -68,7 +68,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _CastShadows: 0
-    - _ClipHeight: -5
+    - _ClipHeight: -0.8
     - _Cull: 2
     - _DstBlend: 10
     - _FresnelPower: 0.66

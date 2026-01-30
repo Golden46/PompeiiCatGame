@@ -49,8 +49,13 @@ public class QuestManager : MonoBehaviour
     public void CompleteQuest(Quest quest)
     {
         quest.isCompleted = true;
-        isActive = false;
         Debug.Log("Quest completed: " + quest.title);
+    }
+
+    public void FinishQuest()
+    {
+        isActive = false;
+        questUI.DisableQuestUI();
     }
 
     public Quest GetActiveQuest()

@@ -129,7 +129,13 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnEcho(InputAction.CallbackContext context)
     {
-        if (_catAIStateMachine == null || _questManager.isActive || _currentTargetableQuest.isCompleted) return;
+        if (_currentTargetableQuest.isCompleted)
+        {
+            _questManager.FinishQuest();
+            return;
+        }
+
+        if (_catAIStateMachine == null || _questManager.isActive) return;
 
         Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
         AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);

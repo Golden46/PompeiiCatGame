@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class QuestUI : MonoBehaviour
 {
+    [SerializeField] private GameObject QuestPanel;
     [SerializeField] private GameObject objectivePrefab;
     [SerializeField] private RectTransform objectivePanel;
     [SerializeField] private Texture tickedBox;
@@ -23,6 +24,7 @@ public class QuestUI : MonoBehaviour
 
     public void EnableQuestUI()
     {
+        QuestPanel.SetActive(true);
         Quest quest = questManager.GetActiveQuest();
         questTitleText.text = quest.title;
         questDescText.text = quest.description;
@@ -32,6 +34,11 @@ public class QuestUI : MonoBehaviour
             questObjects.Add(objective);
             objective.GetComponentInChildren<TextMeshProUGUI>().text = obj.objectiveDescription;
         }
+    }
+
+    public void DisableQuestUI()
+    {
+        QuestPanel.SetActive(false);
     }
 
     public void UpdateQuestObjective(QuestObjective objective)

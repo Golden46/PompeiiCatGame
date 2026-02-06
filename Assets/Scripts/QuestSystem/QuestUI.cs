@@ -8,7 +8,7 @@ public class QuestUI : MonoBehaviour
 {
     [SerializeField] private GameObject QuestPanel;
     [SerializeField] private GameObject objectivePrefab;
-    [SerializeField] private RectTransform objectivePanel;
+    [SerializeField] private Transform objectivePanel;
     [SerializeField] private Texture tickedBox;
 
     public TextMeshProUGUI questTitleText;
@@ -39,6 +39,11 @@ public class QuestUI : MonoBehaviour
     public void DisableQuestUI()
     {
         QuestPanel.SetActive(false);
+        questObjects.Clear();
+        foreach (Transform obj in objectivePanel)
+        {
+            Destroy(obj.gameObject);
+        }
     }
 
     public void UpdateQuestObjective(QuestObjective objective)

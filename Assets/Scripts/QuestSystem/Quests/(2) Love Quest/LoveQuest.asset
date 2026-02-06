@@ -15,4 +15,5 @@ MonoBehaviour:
   title: Love
   description: love is love
   isCompleted: 0
-  objectives: []
+  objectives:
+  - {fileID: 11400000, guid: 88d692d77b4c9e24f846eae27be40924, type: 2}

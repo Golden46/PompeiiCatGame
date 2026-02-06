@@ -10,7 +10,6 @@ public class ObjectInteract : MonoBehaviour
     private void OnEnable()
     {
         _questManager = QuestManager.Instance;
-
         if (_quest == _questManager.GetActiveQuest()) PickupItem();
         else enabled = false;
     }

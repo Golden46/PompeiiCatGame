@@ -55,6 +55,8 @@ public class QuestManager : MonoBehaviour
     public void FinishQuest()
     {
         isActive = false;
+        activeQuest = null;
+        completedObjs = 0;
         questUI.DisableQuestUI();
     }
 

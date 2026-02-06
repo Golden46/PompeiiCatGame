@@ -206,6 +206,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         if (other.CompareTag("QuestItem"))
         {
+            Debug.Log(other.GetComponent<ObjectInteract>().name);
             other.GetComponent<ObjectInteract>().enabled = true;
         }
     }

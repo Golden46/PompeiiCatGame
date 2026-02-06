@@ -72,10 +72,12 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public float Gravity { get { return _gravity; }  }
 
     [Header("For RB Movement (WIP)")]
-    public float speed = 4.0f;
+    public float speed = 300.0f;
+    private Vector3 Movement;
     public CinemachineFreeLook cmFreeLook;
-    public Rigidbody rb;
-    public float rotateSpeed = 10.0f;
+    private Rigidbody rb;
+    private float targetAngle;
+    public float rotationSpeed = 10f;
 
     private void Awake()
     {
@@ -85,7 +87,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
         // Setup Components / Variables
         _characterController = GetComponent<CharacterController>();
-        //rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         _questManager = QuestManager.Instance;
         _currentSpeed = _moveSpeed;
 
@@ -102,18 +104,18 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private void Update()
     {
         _currentState.UpdateState();
-        HandleMovement();
-        ApplyGravity();
+        GetOrientation();
     }
 
     private void FixedUpdate()
     {
-        //HandleMovement(); // For RB movement.
+        HandleMovement(); // For RB movement.
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
+        Movement = new Vector3(_moveInput.x, 0, _moveInput.y);
         _isWalkPressed = _moveInput.x != 0 || _moveInput.y != 0;
     }
 
@@ -129,6 +131,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnEcho(InputAction.CallbackContext context)
     {
+        Debug.Log("Echo");
         if (_currentTargetableQuest.isCompleted)
         {
             _questManager.FinishQuest();
@@ -147,44 +150,22 @@ public class PlayerControllerStateMachine : MonoBehaviour
     {
         Debug.Log("Meow");
     }
+ 
+    private void GetOrientation()
+    {
+        targetAngle = Mathf.Atan2(_moveInput.x, _moveInput.y) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _rotationVelocity, _rotationSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        //Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+    }
 
     private void HandleMovement()
     {
-        Vector3 inputDirection = new Vector3(_appliedMovement.x, 0f, _appliedMovement.y).normalized;
-
-        if (inputDirection.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _rotationVelocity, _rotationSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            _characterController.Move(moveDir.normalized * _currentSpeed * Time.deltaTime);
-        }
+        if (_moveInput == Vector2.zero) return;  
+       rb.linearVelocity = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward * speed * Time.fixedDeltaTime;  
     }
-
-    // Making a start to RB movement :/
-    /*
-    private void HandleMovement()
-    { 
-        Vector3 inputVector = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, transform.eulerAngles.z);
-        inputVector = transform.TransformDirection(inputVector);
-        rb.linearVelocity = inputVector * speed; 
-    }
-    */
-    
-    private void ApplyGravity()
-    {
-        if (_characterController.isGrounded && _velocity.y < 0)
-        {
-            _velocity.y = -2f;
-        }
-
-        _velocity.y += _gravity * Time.deltaTime;
-        _characterController.Move(_velocity * Time.deltaTime);
-    }
-
+ 
     private void GetQuestObjects(Collider other)
     {
         interactObject = other.GetComponent<GetQuest>();

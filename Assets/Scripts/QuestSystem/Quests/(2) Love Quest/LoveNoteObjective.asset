@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LoveNoteObjective
   m_EditorClassIdentifier: 
   objectiveDescription: Find the love note
-  isCompleted: 0
+  isCompleted: 1

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GrainObjective
   m_EditorClassIdentifier: 
   objectiveDescription: Gather grain
-  isCompleted: 0
+  isCompleted: 1

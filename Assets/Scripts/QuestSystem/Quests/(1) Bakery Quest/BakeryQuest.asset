@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Numerus Pistoris
   description: Bake the bread
-  isCompleted: 0
+  isCompleted: 1
   objectives:
   - {fileID: 11400000, guid: f2a80bf34e688214ba84f494280b3822, type: 2}
   - {fileID: 11400000, guid: 851abafb65200304d89ba9987580780b, type: 2}

@@ -16,7 +16,7 @@ public class GetQuest : MonoBehaviour
     public void Rebuild()
     {
         questCamera.gameObject.SetActive(true);
-        float duration = 0.0f; // Original 9.5f
+        float duration = 9.5f; // Original 9.5f
         float startHeight = 0f;
         float endHeight = 2.5f;
         foreach (GameObject structure in holoStructure)

@@ -72,12 +72,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public float Gravity { get { return _gravity; }  }
 
     [Header("For RB Movement (WIP)")]
-    public float speed = 300.0f;
-    private Vector3 Movement;
-    public CinemachineFreeLook cmFreeLook;
+    public float speed = 100.0f;
     private Rigidbody rb;
     private float targetAngle;
-    public float rotationSpeed = 10f;
 
     private void Awake()
     {
@@ -88,7 +85,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
         // Setup Components / Variables
         _characterController = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
-        _questManager = QuestManager.Instance;
         _currentSpeed = _moveSpeed;
 
         // Setup State
@@ -101,10 +97,15 @@ public class PlayerControllerStateMachine : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    private void Start()
+    {
+        _questManager = QuestManager.Instance;
+    }
+
     private void Update()
     {
         _currentState.UpdateState();
-        GetOrientation();
+        if (_isWalkPressed) GetOrientation();
     }
 
     private void FixedUpdate()
@@ -115,7 +116,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
-        Movement = new Vector3(_moveInput.x, 0, _moveInput.y);
         _isWalkPressed = _moveInput.x != 0 || _moveInput.y != 0;
     }
 
@@ -156,8 +156,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
         targetAngle = Mathf.Atan2(_moveInput.x, _moveInput.y) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _rotationVelocity, _rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-        //Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
     }
 
     private void HandleMovement()

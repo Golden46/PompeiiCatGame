@@ -44,6 +44,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private CatAIStateMachine _catAIStateMachine;
     private QuestManager _questManager;
     private Quest _currentTargetableQuest;
+    private Animator _animator;
     private GameObject[] _holoStructure;
 
     // State variables
@@ -82,11 +83,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
         if (Instance != null && Instance != this) Destroy(this);
         else Instance = this;
 
-        // Setup Components / Variables
-        _characterController = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody>();
-        _currentSpeed = _moveSpeed;
-
         // Setup State
         _states = new PlayerControllerStateFactory(this);
         _currentState = _states.Idle();
@@ -99,7 +95,13 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void Start()
     {
+        // Setup Components / Variables
+        _characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         _questManager = QuestManager.Instance;
+        _animator = GetComponent<Animator>();
+
+        _currentSpeed = _moveSpeed;
     }
 
     private void Update()
@@ -115,6 +117,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (context.performed) _animator.SetBool("IsWalking", true);
+        if (context.canceled) _animator.SetBool("IsWalking", false);
+
         _moveInput = context.ReadValue<Vector2>();
         _isWalkPressed = _moveInput.x != 0 || _moveInput.y != 0;
     }

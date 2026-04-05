@@ -1,14 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+using Cinemachine;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instance { get; private set; }
 
+    private readonly int _clipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
+
     public QuestUI questUI;
 
     public Quest activeQuest;
-    public bool isActive;
+    public QuestState activeQuestState = QuestState.Inactive;
     private float _completedObjs;
+    private readonly List<Quest> _finishedQuests = new(); 
 
     private void Awake()
     {
@@ -21,47 +28,99 @@ public class QuestManager : MonoBehaviour
         questUI = GetComponent<QuestUI>();
     }
 
-    public void StartQuest(Quest quest)
+    public bool CheckQuestState(Quest quest)
     {
-        if (isActive) return;
+        if (_finishedQuests.Contains(quest)) return true;
+        switch (activeQuestState)
+        {
+            case QuestState.Inactive:
+                StartQuest(quest);
+                return false;
+            case QuestState.Completed:
+                FinishQuest();
+                break;
+        }
 
+        return true;
+    }
+
+    private void StartQuest(Quest quest)
+    {
         activeQuest = quest;
-        _completedObjs = 0;
-        isActive = true;
+        activeQuestState = QuestState.Active;
+        
         questUI.EnableQuestUI();
     }
 
-    public void CompleteObjective(Quest quest, QuestObjective objective)
+    public void HoloRestoration(CinemachineVirtualCamera questCamera, GameObject[] holoStructure)
     {
-        foreach (QuestObjective obj in quest.objectives)
+        questCamera.gameObject.SetActive(true); // Enables the dolly camera
+        const float duration = 9.5f;
+        const float startHeight = 0f;
+        const float endHeight = 2.5f;
+        foreach (var structure in holoStructure)
         {
-            if (objective == obj)
-            {
-                _completedObjs++;
-                obj.CompleteObjective();
-                questUI.UpdateQuestObjective(obj);
-            }
+            var targetRenderer = structure.GetComponent<Renderer>();
+            StartCoroutine(Verticality(targetRenderer, duration, startHeight, endHeight, questCamera));
+        }
+    }
+
+    private IEnumerator Verticality(Renderer targetRenderer, float duration, float startHeight, float endHeight,
+        CinemachineVirtualCamera questCamera)
+    {
+        targetRenderer.material = new Material(targetRenderer.material);
+
+        var elapsedTime = 0f;
+
+        targetRenderer.material.SetFloat(_clipHeightPropertyID, startHeight);
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            var currentHeight = Mathf.Lerp(startHeight, endHeight, elapsedTime / duration);
+
+            targetRenderer.material.SetFloat(_clipHeightPropertyID, currentHeight);
+            yield return null;
         }
 
-        if (_completedObjs >= quest.objectives.Length) CompleteQuest(quest);
-    }
-
-    public void CompleteQuest(Quest quest)
-    {
-        quest.isCompleted = true;
-        Debug.Log("Quest completed: " + quest.title);
-    }
-
-    public void FinishQuest()
-    {
-        isActive = false;
-        activeQuest = null;
-        _completedObjs = 0;
-        questUI.DisableQuestUI();
+        questCamera.gameObject.SetActive(false); // Disables the dolly camera
+        targetRenderer.material.SetFloat(_clipHeightPropertyID, endHeight);
     }
 
     public Quest GetActiveQuest()
     {
         return activeQuest;
+    }
+    
+    public bool CompleteObjective(string itemID)
+    {
+        if (activeQuestState == QuestState.Inactive) return false;
+        foreach (var obj in activeQuest.objectives)
+        {
+            if (obj.itemID == itemID)
+            {
+                _completedObjs++;
+                questUI.UpdateQuestObjective(obj);
+                if (_completedObjs >= activeQuest.objectives.Length) CompleteQuest();
+                return true;
+            }
+        }
+        
+        return false;
+    }
+        
+    private void CompleteQuest()
+    {
+        activeQuestState = QuestState.Completed;
+        Debug.Log("Quest completed: " + activeQuest.title);
+    }
+    
+    private void FinishQuest()
+    {
+        activeQuestState = QuestState.Inactive;
+        _finishedQuests.Add(activeQuest);
+        _completedObjs = 0;
+        questUI.DisableQuestUI();
     }
 }

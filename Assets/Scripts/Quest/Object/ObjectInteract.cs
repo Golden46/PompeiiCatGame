@@ -2,21 +2,18 @@ using UnityEngine;
 
 public class ObjectInteract : MonoBehaviour
 {
-    [SerializeField] private QuestObjective _questObjective;
-    [SerializeField] private Quest _quest;
-
+    [SerializeField] private string itemID;
     private QuestManager _questManager;
-
-    private void OnEnable()
+    
+    private void Start()
     {
         _questManager = QuestManager.Instance;
-        if (_quest == _questManager.GetActiveQuest()) PickupItem();
-        else enabled = false;
     }
 
-    private void PickupItem()
+    private void OnTriggerEnter(Collider other)
     {
-        _questManager.CompleteObjective(_quest, _questObjective);
-        Destroy(gameObject);
+        if (!other.CompareTag("Player")) return;
+        var completed = _questManager.CompleteObjective(itemID);
+        if (completed) Destroy(gameObject);
     }
 }

@@ -16,7 +16,7 @@ public class QuestUI : MonoBehaviour
 
     private QuestManager _questManager;
 
-    void Start()
+    private void Start()
     {
         _questManager = FindAnyObjectByType<QuestManager>();
     }
@@ -24,12 +24,12 @@ public class QuestUI : MonoBehaviour
     public void EnableQuestUI()
     {
         questPanel.SetActive(true);
-        Quest quest = _questManager.GetActiveQuest();
+        var quest = _questManager.GetActiveQuest();
         questTitleText.text = quest.title;
         questDescText.text = quest.description;
 
         foreach (QuestObjective obj in quest.objectives) {
-            GameObject objective = Instantiate(objectivePrefab, objectivePanel.position, Quaternion.identity, objectivePanel);
+            var objective = Instantiate(objectivePrefab, objectivePanel.position, Quaternion.identity, objectivePanel);
             _questObjects.Add(objective);
             objective.GetComponentInChildren<TextMeshProUGUI>().text = obj.objectiveDescription;
         }
@@ -47,7 +47,7 @@ public class QuestUI : MonoBehaviour
 
     public void UpdateQuestObjective(QuestObjective objective)
     {
-        foreach (GameObject obj in _questObjects)
+        foreach (var obj in _questObjects)
         {
             if (obj.GetComponentInChildren<TextMeshProUGUI>().text == objective.objectiveDescription)
             {

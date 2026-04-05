@@ -9,12 +9,8 @@ public class PlayerControllerMoveState : PlayerControllerBaseState
 
     public override void UpdateState() 
     {
-        Debug.Log("Move");
         CheckSwitchStates();
         _ctx.GetOrientation();
-
-        if (_ctx.IsRunPressed) _ctx.CurrentSpeed = _ctx.SprintSpeed;
-        else _ctx.CurrentSpeed = _ctx.MoveSpeed;
     }
 
     public override void FixedUpdateState()

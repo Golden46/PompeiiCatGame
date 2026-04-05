@@ -8,7 +8,7 @@ public class QuestManager : MonoBehaviour
 
     public Quest activeQuest;
     public bool isActive;
-    private float completedObjs;
+    private float _completedObjs;
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class QuestManager : MonoBehaviour
         if (isActive) return;
 
         activeQuest = quest;
-        completedObjs = 0;
+        _completedObjs = 0;
         isActive = true;
         questUI.EnableQuestUI();
     }
@@ -37,13 +37,13 @@ public class QuestManager : MonoBehaviour
         {
             if (objective == obj)
             {
-                completedObjs++;
+                _completedObjs++;
                 obj.CompleteObjective();
                 questUI.UpdateQuestObjective(obj);
             }
         }
 
-        if (completedObjs >= quest.objectives.Length) CompleteQuest(quest);
+        if (_completedObjs >= quest.objectives.Length) CompleteQuest(quest);
     }
 
     public void CompleteQuest(Quest quest)
@@ -56,7 +56,7 @@ public class QuestManager : MonoBehaviour
     {
         isActive = false;
         activeQuest = null;
-        completedObjs = 0;
+        _completedObjs = 0;
         questUI.DisableQuestUI();
     }
 

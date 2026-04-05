@@ -183,7 +183,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
     // Change below into its own script...
     private void OnTriggerEnter(Collider other)
     {
-            if (other.CompareTag("QuestArea"))
+        if (other.CompareTag("QuestArea"))
         {
             GetQuestObjects(other);
         }
@@ -197,7 +197,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "QuestArea") _catAIStateMachine.InQuestLocation = false;
+        if (other.CompareTag("QuestArea")) _catAIStateMachine.InQuestLocation = false;
 
         _currentTargetableQuest = null;
         _catAIStateMachine = null;

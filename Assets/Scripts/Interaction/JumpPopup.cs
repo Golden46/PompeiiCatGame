@@ -13,30 +13,27 @@ public class JumpPopup : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            var direction = _targetPoint.position - other.transform.position;
-            var dot = Vector3.Dot(Camera.main.transform.forward, direction.normalized);
+        if (!other.CompareTag("Player")) return;
+        
+        var direction = _targetPoint.position - other.transform.position;
+        var dot = Vector3.Dot(Camera.main.transform.forward, direction.normalized);
 
-            if (dot >= 0.5f)
-            {
-                JumpTargetPopup.gameObject.SetActive(true);
-                _shouldJump = true;
-            }
-            else
-            {
-                JumpTargetPopup.gameObject.SetActive(false);
-                _shouldJump = false;
-            }
+        if (dot >= 0.5f)
+        {
+            JumpTargetPopup.gameObject.SetActive(true);
+            _shouldJump = true;
+        }
+        else
+        {
+            JumpTargetPopup.gameObject.SetActive(false);
+            _shouldJump = false;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            JumpTargetPopup.gameObject.SetActive(false);
-            _shouldJump = false;
-        }
+        if (!other.CompareTag("Player")) return;
+        JumpTargetPopup.gameObject.SetActive(false);
+        _shouldJump = false;
     }
 }

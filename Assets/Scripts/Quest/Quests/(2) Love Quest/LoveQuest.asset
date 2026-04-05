@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1925688539b500246bca1cea3c389818, type: 3}
   m_Name: LoveQuest
   m_EditorClassIdentifier: 
+  questID: Q_love
   title: Love
   description: love is love
-  isCompleted: 1
   objectives:
   - {fileID: 11400000, guid: 88d692d77b4c9e24f846eae27be40924, type: 2}

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457d713fb2b4bae4aae8077f70bc3b30, type: 3}
   m_Name: WaterObjective
   m_EditorClassIdentifier: 
+  itemID: water_item
   objectiveDescription: Gather water
-  isCompleted: 1

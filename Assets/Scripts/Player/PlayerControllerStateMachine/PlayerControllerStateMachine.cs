@@ -20,7 +20,7 @@ public class PlayerControllerStateMachine : MonoBehaviour
     [FormerlySerializedAs("_jumpArcSpeed")] [SerializeField] private AnimationCurve jumpArcSpeed;
     public AnimationCurve JumpArcSpeed => jumpArcSpeed;
     public bool IsJumpPressed { get; private set; }
-    public bool ShouldJump { get; private set; }
+    private bool _shouldJump;
 
     // Particles
     [SerializeField] private GameObject _echoSensePrefab;
@@ -97,22 +97,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
     {
         if (_questData == null) return;
         _questData.QuestGate();
-        
-        /*
-        Debug.Log("Echo");
-        if (CurrentTargetableQuest.isCompleted)
-        {
-            _questManager.FinishQuest();
-            return;
-        }
-
-        if (_catAIStateMachine == null || _questManager.isActive) return;
-
-        Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
-        AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
-        _questManager.StartQuest(CurrentTargetableQuest); // DONE
-        _interactObject.HoloRestoration(); // DONE 
-        */
     }
 
     public void OnMeow(InputAction.CallbackContext context)
@@ -144,39 +128,12 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (!other.TryGetComponent<JumpPopup>(out var jumpPopup)) return;
-        ShouldJump = jumpPopup.ShouldJump;
-        TargetLedge = ShouldJump ? jumpPopup.TargetPoint : null;
+        _shouldJump = jumpPopup.ShouldJump;
+        TargetLedge = _shouldJump ? jumpPopup.TargetPoint : null;
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<InitiateQuest>(out var initiateQuest)) _questData = null;
     }
-    
-    /*
-    // Change below into its own script...
-    private void GetQuestObjects(Collider other)
-    {
-        _catAIStateMachine = _interactObject.cat.GetComponent<CatAIStateMachine>();
-        _catAIStateMachine.InQuestLocation = true;
-    }
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("QuestItem"))
-        {
-            Debug.Log(other.GetComponent<ObjectInteract>().name);
-            other.GetComponent<ObjectInteract>().enabled = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("QuestArea")) _catAIStateMachine.InQuestLocation = false;
-
-        CurrentTargetableQuest = null;
-        _catAIStateMachine = null;
-        _holoStructure = null;
-    }
-    */
 }

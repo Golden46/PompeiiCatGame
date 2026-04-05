@@ -22,5 +22,7 @@ public class InitiateQuest : MonoBehaviour
         var quest = _questManager.CheckQuestState(catQuest);
         if (quest) return;
         _questManager.HoloRestoration(questCamera, holoStructure);
+        //Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
+        AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
     }
 }

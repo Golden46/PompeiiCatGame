@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457d713fb2b4bae4aae8077f70bc3b30, type: 3}
   m_Name: YeastObjective
   m_EditorClassIdentifier: 
+  itemID: yeast_item
   objectiveDescription: Gather yeast
-  isCompleted: 1

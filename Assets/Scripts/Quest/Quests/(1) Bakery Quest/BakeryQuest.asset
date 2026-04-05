@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1925688539b500246bca1cea3c389818, type: 3}
   m_Name: BakeryQuest
   m_EditorClassIdentifier: 
+  questID: Q_numerus_pistoris
   title: Numerus Pistoris
   description: Bake the bread
-  isCompleted: 0
   objectives:
   - {fileID: 11400000, guid: f2a80bf34e688214ba84f494280b3822, type: 2}
   - {fileID: 11400000, guid: 851abafb65200304d89ba9987580780b, type: 2}

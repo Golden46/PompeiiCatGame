@@ -11,7 +11,7 @@ public class GetQuest : MonoBehaviour
 
     public CinemachineVirtualCamera questCamera;
 
-    private int ClipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
+    private readonly int _clipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
 
     public void Rebuild()
     {
@@ -29,10 +29,10 @@ public class GetQuest : MonoBehaviour
     private IEnumerator VerticalRestoration(Renderer targetRenderer, float duration, float startHeight, float endHeight)
     {
         targetRenderer.material = new Material(targetRenderer.material);
-        
+
         float elapsedTime = 0f;
 
-        targetRenderer.material.SetFloat(ClipHeightPropertyID, startHeight);
+        targetRenderer.material.SetFloat(_clipHeightPropertyID, startHeight);
 
         while (elapsedTime < duration)
         {
@@ -40,11 +40,11 @@ public class GetQuest : MonoBehaviour
 
             float currentHeight = Mathf.Lerp(startHeight, endHeight, elapsedTime / duration);
 
-            targetRenderer.material.SetFloat(ClipHeightPropertyID, currentHeight);
+            targetRenderer.material.SetFloat(_clipHeightPropertyID, currentHeight);
             yield return null;
         }
 
         questCamera.gameObject.SetActive(false);
-        targetRenderer.material.SetFloat(ClipHeightPropertyID, endHeight);
+        targetRenderer.material.SetFloat(_clipHeightPropertyID, endHeight);
     }
 }

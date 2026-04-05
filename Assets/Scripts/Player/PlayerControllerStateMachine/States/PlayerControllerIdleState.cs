@@ -7,11 +7,17 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
 
     public override void EnterState() 
     { 
-        _ctx.AppliedMovementX = 0;
-        _ctx.AppliedMovementZ = 0;
     }
 
-    public override void UpdateState() { CheckSwitchStates(); }
+    public override void UpdateState() 
+    { 
+        CheckSwitchStates();
+        Debug.Log("Idle");
+    }
+
+    public override void FixedUpdateState()
+    {
+    }
 
     public override void ExitState() { }
 
@@ -20,6 +26,11 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
         if (_ctx.IsWalkPressed)
         {
             SwitchState(_factory.Move());
+        }
+
+        if (_ctx.IsJumpPressed && _ctx.TargetLedge != null)
+        {
+            SwitchState(_factory.Jump());
         }
     }
 }

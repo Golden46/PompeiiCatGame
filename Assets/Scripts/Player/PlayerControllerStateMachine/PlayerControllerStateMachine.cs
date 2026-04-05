@@ -1,5 +1,3 @@
-using Cinemachine;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,13 +9,12 @@ public class PlayerControllerStateMachine : MonoBehaviour
     // Move settings
     [Header("Movement")]
     private Vector2 _moveInput;
-    private Vector3 _appliedMovement;
     private Vector3 _velocity;
-    [SerializeField] private float _gravity = -9.81f;
 
     // Jump Settings
     [Header("Jump")]
-    [SerializeField] float _jumpHeight = 2f;
+    [SerializeField] private AnimationCurve _jumpArcSpeed;
+    private Transform _targetLedge;
 
     // Speed settings
     [Header("Speed")]
@@ -40,11 +37,10 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private float _rotationVelocity;
 
     // Components
-    private CharacterController _characterController;
     private CatAIStateMachine _catAIStateMachine;
     private QuestManager _questManager;
     private Quest _currentTargetableQuest;
-    private Animator _animator;
+    private Animator _playerAnimator;
     private GameObject[] _holoStructure;
 
     // State variables
@@ -56,24 +52,19 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     // Getters and Setters
     public PlayerControllerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-    public CharacterController CharacterController { get { return _characterController; } }
+    public Rigidbody RB { get { return rb; } set { rb = value; } }
+    public Animator PlayerAnimator { get { return _playerAnimator; } set { _playerAnimator = value;  } }
     public float CurrentSpeed { get { return _currentSpeed; } set { _currentSpeed = value; } }
-    public float MoveSpeed { get { return _moveSpeed; } }
-    public float SprintSpeed { get { return _sprintSpeed; } } 
-    public float MoveInputX { get { return _moveInput.x; } }
-    public float AppliedMovementX { get { return _appliedMovement.x; } set { _appliedMovement.x = value; } }
-    public float MoveInputY { get { return _moveInput.y; } }
-    public float AppliedMovementZ { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
-    public bool IsJumpPressed { get { return _isJumpPressed; } }
-    public bool IsWalkPressed { get { return _isWalkPressed; } }
-    public bool isRunPressed { get { return _isRunPressed; } }
-    public Vector3 Velocity { get { return _velocity; } }
-    public float VelocityY { get { return Velocity.y; } set { _velocity.y = value; } }
-    public float JumpHeight { get { return _jumpHeight; } }
-    public float Gravity { get { return _gravity; }  }
+    public Transform TargetLedge { get { return _targetLedge; } set { _targetLedge = value; } }
+    public AnimationCurve JumpArcSpeed => _jumpArcSpeed;
+    public float MoveSpeed => _moveSpeed;
+    public float SprintSpeed => _sprintSpeed;
+    public bool IsJumpPressed => _isJumpPressed;
+    public bool IsWalkPressed => _isWalkPressed;
+    public bool IsRunPressed => _isRunPressed;
 
     [Header("For RB Movement (WIP)")]
-    public float speed = 100.0f;
+    public float speed = 60.0f;
     private Rigidbody rb;
     private float targetAngle;
 
@@ -96,10 +87,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private void Start()
     {
         // Setup Components / Variables
-        _characterController = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         _questManager = QuestManager.Instance;
-        _animator = GetComponent<Animator>();
+        _playerAnimator = GetComponent<Animator>();
 
         _currentSpeed = _moveSpeed;
     }
@@ -107,19 +97,15 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private void Update()
     {
         _currentState.UpdateState();
-        if (_isWalkPressed) GetOrientation();
     }
 
     private void FixedUpdate()
     {
-        HandleMovement(); // For RB movement.
+        _currentState.FixedUpdateState();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed) _animator.SetBool("IsWalking", true);
-        if (context.canceled) _animator.SetBool("IsWalking", false);
-
         _moveInput = context.ReadValue<Vector2>();
         _isWalkPressed = _moveInput.x != 0 || _moveInput.y != 0;
     }
@@ -156,17 +142,18 @@ public class PlayerControllerStateMachine : MonoBehaviour
         Debug.Log("Meow");
     }
  
-    private void GetOrientation()
+    public void GetOrientation()
     {
         targetAngle = Mathf.Atan2(_moveInput.x, _moveInput.y) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _rotationVelocity, _rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 
-    private void HandleMovement()
+    public void HandleMovement()
     {
-        if (_moveInput == Vector2.zero) return;  
-       rb.linearVelocity = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward * speed * Time.fixedDeltaTime;  
+        if (_moveInput == Vector2.zero) return;
+        Vector3 moveVelocity = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward * speed;
+        rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
     }
  
     private void GetQuestObjects(Collider other)
@@ -181,9 +168,22 @@ public class PlayerControllerStateMachine : MonoBehaviour
         _holoStructure = interactObject.holoStructure;
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent<JumpPopup>(out JumpPopup jumpPopup))
+        {
+            _targetLedge = jumpPopup.ShouldJump ? jumpPopup.TargetPoint : null;
+        }
+        else
+        {
+            _targetLedge = null;
+        }
+    }
+
+    // Change below into its own script...
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("QuestArea"))
+            if (other.CompareTag("QuestArea"))
         {
             GetQuestObjects(other);
         }

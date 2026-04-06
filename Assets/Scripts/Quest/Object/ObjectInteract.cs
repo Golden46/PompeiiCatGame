@@ -11,19 +11,22 @@ public class ObjectInteract : MonoBehaviour
     {
         _questManager = QuestManager.Instance;
     }
-    
-    
-    private void OnTriggerEnter(Collider other)
+
+    public void Pickup()
     {
-        if (!other.CompareTag("Player")) return;
         var completed = _questManager.CompleteObjective(itemID);
         if (completed) Destroy(gameObject);
     }
-    
     
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         itemPopup.gameObject.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        itemPopup.gameObject.SetActive(false);
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class QuestUI : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class QuestUI : MonoBehaviour
 
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questDescText;
-    private readonly List<GameObject> _questObjects = new List<GameObject>();
+    private readonly List<GameObject> _questObjects = new();
 
     private QuestManager _questManager;
 
@@ -31,8 +32,10 @@ public class QuestUI : MonoBehaviour
         foreach (QuestObjective obj in quest.objectives) {
             var objective = Instantiate(objectivePrefab, objectivePanel.position, Quaternion.identity, objectivePanel);
             _questObjects.Add(objective);
-            objective.GetComponentInChildren<TextMeshProUGUI>().text = obj.objectiveDescription;
+            objective.GetComponent<TextMeshProUGUI>().text = obj.objectiveDescription;
         }
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(questPanel.GetComponent<RectTransform>());
     }
 
     public void DisableQuestUI()
@@ -44,14 +47,14 @@ public class QuestUI : MonoBehaviour
             Destroy(obj.gameObject);
         }
     }
-
+    
     public void UpdateQuestObjective(QuestObjective objective)
     {
         foreach (var obj in _questObjects)
         {
-            if (obj.GetComponentInChildren<TextMeshProUGUI>().text == objective.objectiveDescription)
+            if (obj.GetComponent<TextMeshProUGUI>().text == objective.objectiveDescription)
             {
-                obj.GetComponentInChildren<Image>().sprite = tickedBox;
+                obj.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
             }
         }
     }

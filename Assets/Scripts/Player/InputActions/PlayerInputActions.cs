@@ -120,7 +120,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Meow"",
+                    ""name"": ""Pickup"",
                     ""type"": ""Button"",
                     ""id"": ""4a1f5f52-476d-4712-a432-79192dc67194"",
                     ""expectedControlType"": """",
@@ -219,11 +219,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7251223c-7dd1-4412-95c2-d81722697352"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""Meow"",
+                    ""action"": ""Pickup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -254,7 +254,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Meow = m_Player.FindAction("Meow", throwIfNotFound: true);
+        m_Player_Pickup = m_Player.FindAction("Pickup", throwIfNotFound: true);
         m_Player_Echo = m_Player.FindAction("Echo", throwIfNotFound: true);
     }
 
@@ -339,7 +339,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Meow;
+    private readonly InputAction m_Player_Pickup;
     private readonly InputAction m_Player_Echo;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -365,9 +365,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Meow".
+        /// Provides access to the underlying input action "Player/Pickup".
         /// </summary>
-        public InputAction @Meow => m_Wrapper.m_Player_Meow;
+        public InputAction @Pickup => m_Wrapper.m_Player_Pickup;
         /// <summary>
         /// Provides access to the underlying input action "Player/Echo".
         /// </summary>
@@ -407,9 +407,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Meow.started += instance.OnMeow;
-            @Meow.performed += instance.OnMeow;
-            @Meow.canceled += instance.OnMeow;
+            @Pickup.started += instance.OnPickup;
+            @Pickup.performed += instance.OnPickup;
+            @Pickup.canceled += instance.OnPickup;
             @Echo.started += instance.OnEcho;
             @Echo.performed += instance.OnEcho;
             @Echo.canceled += instance.OnEcho;
@@ -433,9 +433,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Meow.started -= instance.OnMeow;
-            @Meow.performed -= instance.OnMeow;
-            @Meow.canceled -= instance.OnMeow;
+            @Pickup.started -= instance.OnPickup;
+            @Pickup.performed -= instance.OnPickup;
+            @Pickup.canceled -= instance.OnPickup;
             @Echo.started -= instance.OnEcho;
             @Echo.performed -= instance.OnEcho;
             @Echo.canceled -= instance.OnEcho;
@@ -514,12 +514,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Meow" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pickup" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMeow(InputAction.CallbackContext context);
+        void OnPickup(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Echo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

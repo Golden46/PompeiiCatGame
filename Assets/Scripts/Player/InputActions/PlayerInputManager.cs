@@ -32,7 +32,7 @@ public class CatInputManager : MonoBehaviour
 
         // Interaction
         PlayerInputActions.Player.Echo.performed += ctx => playerStateMachine.OnEcho(ctx);
-        PlayerInputActions.Player.Meow.performed += ctx => playerStateMachine.OnMeow(ctx);
+        PlayerInputActions.Player.Pickup.performed += ctx => playerStateMachine.OnPickup(ctx);
     }
 
     private void OnDisable()
@@ -49,7 +49,7 @@ public class CatInputManager : MonoBehaviour
 
         // Interaction
         PlayerInputActions.Player.Echo.performed -= playerStateMachine.OnEcho;
-        PlayerInputActions.Player.Meow.performed -= playerStateMachine.OnMeow;
+        PlayerInputActions.Player.Pickup.performed -= playerStateMachine.OnPickup;
 
         PlayerInputActions.Player.Disable();
     }

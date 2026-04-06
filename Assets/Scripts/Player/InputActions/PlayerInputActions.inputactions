@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Meow",
+                    "name": "Pickup",
                     "type": "Button",
                     "id": "4a1f5f52-476d-4712-a432-79192dc67194",
                     "expectedControlType": "",
@@ -133,11 +133,11 @@
                 {
                     "name": "",
                     "id": "7251223c-7dd1-4412-95c2-d81722697352",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "Meow",
+                    "action": "Pickup",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

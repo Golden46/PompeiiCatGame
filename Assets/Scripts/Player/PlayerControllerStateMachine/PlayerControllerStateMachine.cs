@@ -39,9 +39,9 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private PlayerControllerStateFactory _states;
     public PlayerControllerBaseState CurrentState { get; set; }
 
-    // Quest interaction stuff
-    private bool _canEcho;
+    // Interaction stuff
     private InitiateQuest _questData;
+    private ObjectInteract _interactData;
 
     private void Awake()
     {
@@ -91,19 +91,19 @@ public class PlayerControllerStateMachine : MonoBehaviour
     {
         IsJumpPressed = context.ReadValueAsButton();
     }
-
-
+    
     public void OnEcho(InputAction.CallbackContext context)
     {
         if (_questData == null) return;
         _questData.QuestGate();
     }
-
-    public void OnMeow(InputAction.CallbackContext context)
+    
+    public void OnPickup(InputAction.CallbackContext context)
     {
-        Debug.Log("Meow");
+        if (_interactData == null) return;
+        _interactData.Pickup();
     }
- 
+
     public void GetOrientation()
     {
         _targetAngle = Mathf.Atan2(_moveInput.x, _moveInput.y) * Mathf.Rad2Deg + _cameraTransform.eulerAngles.y;
@@ -120,9 +120,8 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent<InitiateQuest>(out var initiateQuest)) return;
-        _canEcho = true;
-        _questData = initiateQuest;
+        if (other.TryGetComponent<InitiateQuest>(out var initiateQuest)) _questData = initiateQuest;
+        else if (other.TryGetComponent<ObjectInteract>(out var objectInteract)) _interactData = objectInteract;
     }
 
     private void OnTriggerStay(Collider other)
@@ -135,5 +134,6 @@ public class PlayerControllerStateMachine : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<InitiateQuest>(out var initiateQuest)) _questData = null;
+        else if (other.TryGetComponent<ObjectInteract>(out var objectInteract)) _interactData = null;
     }
 }

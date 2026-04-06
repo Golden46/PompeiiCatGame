@@ -8,7 +8,7 @@ public class QuestUI : MonoBehaviour
     [SerializeField] private GameObject questPanel;
     [SerializeField] private GameObject objectivePrefab;
     [SerializeField] private Transform objectivePanel;
-    [SerializeField] private Texture tickedBox;
+    [SerializeField] private Sprite tickedBox;
 
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questDescText;
@@ -51,7 +51,7 @@ public class QuestUI : MonoBehaviour
         {
             if (obj.GetComponentInChildren<TextMeshProUGUI>().text == objective.objectiveDescription)
             {
-                obj.GetComponentInChildren<RawImage>().texture = tickedBox;
+                obj.GetComponentInChildren<Image>().sprite = tickedBox;
             }
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class ObjectInteract : MonoBehaviour
@@ -14,8 +13,8 @@ public class ObjectInteract : MonoBehaviour
 
     public void Pickup()
     {
-        var completed = _questManager.CompleteObjective(itemID);
-        if (completed) Destroy(gameObject);
+        var collectItem = _questManager.CheckObjective(itemID); // Check to either complete an objective or pick up objective item
+        if (collectItem) Destroy(gameObject); // If either happen then delete the real world object
     }
     
     private void OnTriggerStay(Collider other)

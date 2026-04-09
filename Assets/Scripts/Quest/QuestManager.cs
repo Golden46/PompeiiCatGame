@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Cinemachine;
+using UnityEditor;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -11,11 +11,14 @@ public class QuestManager : MonoBehaviour
     private readonly int _clipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
 
     public QuestUI questUI;
-
+    
     public Quest activeQuest;
     public QuestState activeQuestState = QuestState.Inactive;
+    
+    private HashSet<string> _collectedItems = new(); // Used to see if certain objectives can be completed.
     private float _completedObjs;
-    private readonly List<Quest> _finishedQuests = new(); 
+    
+    private readonly HashSet<Quest> _finishedQuests = new(); 
 
     private void Awake()
     {
@@ -93,23 +96,36 @@ public class QuestManager : MonoBehaviour
         return activeQuest;
     }
     
-    public bool CompleteObjective(string itemID)
+    public bool CheckObjective(string itemID)
     {
         if (activeQuestState == QuestState.Inactive) return false;
         foreach (var obj in activeQuest.objectives)
         {
             if (obj.itemID == itemID)
             {
-                _completedObjs++;
-                questUI.UpdateQuestObjective(obj);
-                if (_completedObjs >= activeQuest.objectives.Length) CompleteQuest();
+                if (obj.requiredItemID == "" || _collectedItems.Contains(obj.requiredItemID)) return CompleteObjective(obj);
+                
+                return false;
+            }
+            
+            if (obj.requiredItemID == itemID)
+            { 
+                _collectedItems.Add(itemID);
                 return true;
             }
         }
         
         return false;
     }
-        
+
+    private bool CompleteObjective(QuestObjective obj)
+    {
+        _completedObjs++;
+        questUI.UpdateQuestObjective(obj);
+        if (_completedObjs >= activeQuest.objectives.Length) CompleteQuest();
+        return true;
+    }
+    
     private void CompleteQuest()
     {
         activeQuestState = QuestState.Completed;

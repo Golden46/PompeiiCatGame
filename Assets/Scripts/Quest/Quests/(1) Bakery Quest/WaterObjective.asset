@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemID: water_item
   objectiveDescription: Gather water
+  requiredItemID: bucket_item

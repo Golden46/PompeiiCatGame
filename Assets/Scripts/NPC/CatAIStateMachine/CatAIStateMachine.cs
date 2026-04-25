@@ -59,11 +59,6 @@ public class CatAIStateMachine : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(questPoint.point.position, GizmoRadius);
     }
-
-    public void TriggerQuestStart()
-    {
-        _inQuestLocation = true;
-    }
 }
 
 [System.Serializable]

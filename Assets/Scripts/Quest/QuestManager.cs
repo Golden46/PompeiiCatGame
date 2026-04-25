@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class QuestManager : MonoBehaviour
 {
@@ -14,6 +14,9 @@ public class QuestManager : MonoBehaviour
     
     public Quest activeQuest;
     public QuestState activeQuestState = QuestState.Inactive;
+    
+    [FormerlySerializedAs("cantCollectItemMessages")] public string[] itemCollectErrorMessages;
+    public string[] itemCollectMessages;
     
     private HashSet<string> _collectedItems = new(); // Used to see if certain objectives can be completed.
     private float _completedObjs;

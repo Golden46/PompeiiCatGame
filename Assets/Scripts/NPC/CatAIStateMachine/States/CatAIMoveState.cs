@@ -6,8 +6,8 @@ public class CatAIMoveState : CatAIBaseState
     public CatAIMoveState(CatAIStateMachine currentContext, CatAIStateFactory catAIStateFactory)
     : base (currentContext, catAIStateFactory){}
 
-    private float _timer = 0.0f;
-    private bool _animating = false;
+    private float _timer;
+    private bool _animating;
     private PatrolPoint newTarget;
 
     public override void EnterState(){ MoveToDestination(); }
@@ -49,7 +49,7 @@ public class CatAIMoveState : CatAIBaseState
     {
         if (!_animating)
         {
-            _ctx.Animator.SetTrigger(_ctx.CurrentTarget.animationTrigger);
+            _ctx.Animator.SetBool(_ctx.CurrentTarget.animationTrigger, true);
             _animating = true;
         }
 
@@ -62,6 +62,7 @@ public class CatAIMoveState : CatAIBaseState
             _timer += Time.deltaTime;
             if (_timer >= _ctx.CurrentTarget.animationDuration)
             {
+                _ctx.Animator.SetBool(_ctx.CurrentTarget.animationTrigger, false);
                 MoveToDestination();
             }
         }

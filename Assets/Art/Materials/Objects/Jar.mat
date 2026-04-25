@@ -21,7 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Jar
-  m_Shader: {fileID: -6465566751694194690, guid: ea5df8ce503cd8c4180accc2af24b7dd, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: ea5df8ce503cd8c4180accc2af24b7dd,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -118,9 +119,9 @@ Material:
     - _GlossyReflections: 0
     - _Gradient_Noise: 8.85
     - _Gradient_Noise_Scale: 6.99
-    - _H_Edge_1: 0.24
-    - _H_Edge_2: 1
-    - _H_Noise_Scale: 25.8
+    - _H_Edge_1: 0.415
+    - _H_Edge_2: 0.943
+    - _H_Noise_Scale: 70.5
     - _H_Strength: 2
     - _Metallic: 0
     - _Noise_Scale: 19.6
@@ -129,7 +130,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.345
+    - _Smoothness: 0.1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -137,10 +138,10 @@ Material:
     - _Step: 0.1
     - _Step_1: 0.26
     - _Surface: 0
-    - _V_Edge_1: 0.162
-    - _V_Edge_2: 0.433
-    - _V_Noise_Scale: 19.2
-    - _Vertical_Blend: 34.4
+    - _V_Edge_1: 0.203
+    - _V_Edge_2: 0.602
+    - _V_Noise_Scale: 33.9
+    - _Vertical_Blend: 24.5
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _X_Strength: 8.25

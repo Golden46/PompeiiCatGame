@@ -19,8 +19,13 @@ public class ObjectInteract : MonoBehaviour
     public void Pickup()
     {
         var collectItem = _questManager.CheckObjective(itemID); // Check to either complete an objective or pick up objective item
-        if (!collectItem) return;
+        if (!collectItem)
+        {
+            SubtitleManager.Instance.ShowSubtitle(_questManager.itemCollectErrorMessages[Random.Range(0, _questManager.itemCollectErrorMessages.Length)]);
+            return;   
+        }
         
+        SubtitleManager.Instance.ShowSubtitle($"{_questManager.itemCollectMessages[Random.Range(0, _questManager.itemCollectMessages.Length)]} {itemID.Replace("_item", "")}.");
         if (destroyObject) Destroy(gameObject); // If either happen then delete the real world object
         if (_animator != null) _animator.SetTrigger(animationTrigger);
     }

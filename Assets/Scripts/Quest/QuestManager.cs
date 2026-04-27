@@ -9,11 +9,13 @@ public class QuestManager : MonoBehaviour
     public static QuestManager Instance { get; private set; }
 
     private readonly int _clipHeightPropertyID = Shader.PropertyToID("_ClipHeight");
+    public Material holoMaterial;
 
     public QuestUI questUI;
     
     public Quest activeQuest;
     public QuestState activeQuestState = QuestState.Inactive;
+    public List<GameObject> questBuilding;
     
     [FormerlySerializedAs("cantCollectItemMessages")] public string[] itemCollectErrorMessages;
     public string[] itemCollectMessages;
@@ -58,42 +60,54 @@ public class QuestManager : MonoBehaviour
         questUI.EnableQuestUI();
     }
 
-    public void HoloRestoration(CinemachineVirtualCamera questCamera, GameObject[] holoStructure)
+    public void HoloRestoration(CinemachineVirtualCamera questCamera,  List<Renderer> holoStructure)
     {
         questCamera.gameObject.SetActive(true); // Enables the dolly camera
         const float duration = 9.5f;
         const float startHeight = 0f;
-        const float endHeight = 2.5f;
-        foreach (var structure in holoStructure)
+        const float endHeight = 10f;
+        foreach (var r in holoStructure)
         {
-            var targetRenderer = structure.GetComponent<Renderer>();
-            StartCoroutine(Verticality(targetRenderer, duration, startHeight, endHeight, questCamera));
+            StartCoroutine(Verticality(r, duration, startHeight, endHeight, questCamera));
         }
     }
 
     private IEnumerator Verticality(Renderer targetRenderer, float duration, float startHeight, float endHeight,
         CinemachineVirtualCamera questCamera)
     {
-        targetRenderer.material = new Material(targetRenderer.material);
+        // Clone all material slots with the hologram material
+        var materials = targetRenderer.materials;
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if (materials[i].shader == holoMaterial.shader)
+                materials[i] = new Material(materials[i]);
+        }
+        targetRenderer.materials = materials;
 
         var elapsedTime = 0f;
-
-        targetRenderer.material.SetFloat(_clipHeightPropertyID, startHeight);
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-
             var currentHeight = Mathf.Lerp(startHeight, endHeight, elapsedTime / duration);
 
-            targetRenderer.material.SetFloat(_clipHeightPropertyID, currentHeight);
+            foreach (var m in targetRenderer.materials)
+            {
+                if (m.shader == holoMaterial.shader)
+                    m.SetFloat(_clipHeightPropertyID, currentHeight);
+            }
             yield return null;
         }
 
-        questCamera.gameObject.SetActive(false); // Disables the dolly camera
-        targetRenderer.material.SetFloat(_clipHeightPropertyID, endHeight);
-    }
+        foreach (var m in targetRenderer.materials)
+        {
+            if (m.shader == holoMaterial.shader)
+                m.SetFloat(_clipHeightPropertyID, endHeight);
+        }
 
+        questCamera.gameObject.SetActive(false);
+    }
+    
     public Quest GetActiveQuest()
     {
         return activeQuest;
@@ -101,23 +115,24 @@ public class QuestManager : MonoBehaviour
     
     public bool CheckObjective(string itemID)
     {
-        if (activeQuestState == QuestState.Inactive) return false;
-        foreach (var obj in activeQuest.objectives)
+        if (activeQuestState == QuestState.Inactive) return false; // If there is no quest then the object cannot be collected.
+        foreach (var obj in activeQuest.objectives) // For all the current objectives needed
         {
-            if (obj.itemID == itemID)
+            if (obj.itemID == itemID)  // If the item trying to be collected is an objective
             {
-                if (obj.requiredItemID == "" || _collectedItems.Contains(obj.requiredItemID)) return CompleteObjective(obj);
+                if (obj.requiredItemID == "" || _collectedItems.Contains(obj.requiredItemID)) return CompleteObjective(obj); // If there is no required item to complete the obj or they have the required item then complete obj.
                 
-                return false;
+                return false; // Otherwise dont.
             }
             
-            if (obj.requiredItemID == itemID)
+            if (obj.requiredItemID == itemID) // If the item isn't an obj but a required objective then collect it
             { 
                 _collectedItems.Add(itemID);
                 return true;
             }
         }
         
+        // If none of this then don't collect
         return false;
     }
 
@@ -132,7 +147,14 @@ public class QuestManager : MonoBehaviour
     private void CompleteQuest()
     {
         activeQuestState = QuestState.Completed;
+        SwitchBuilding();
         Debug.Log("Quest completed: " + activeQuest.title);
+    }
+
+    private void SwitchBuilding()
+    {
+        questBuilding[0].SetActive(false);
+        questBuilding[1].SetActive(true);
     }
     
     private void FinishQuest()

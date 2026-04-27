@@ -17,6 +17,9 @@ MonoBehaviour:
   description: Use this template when creating testing scenes
   preview: {fileID: 0}
   dependencies:
+  - dependency: {fileID: 919132149155446097, guid: 0e8ae954e62fae847aaba084f43596d8,
+      type: 3}
+    instantiationMode: 0
   - dependency: {fileID: 2800000, guid: 070f768db40942f4f9f6f2f5df19c771, type: 3}
     instantiationMode: 1
   - dependency: {fileID: 2800000, guid: 606cb55a7e279684c9fb03e2d77fdbb7, type: 3}
@@ -47,10 +50,14 @@ MonoBehaviour:
   - dependency: {fileID: 6763054420873124597, guid: 67b382aea28509848b40568412284144,
       type: 3}
     instantiationMode: 1
+  - dependency: {fileID: 12800000, guid: c94ac4bc54db1a94b93a35d8a9b021f3, type: 3}
+    instantiationMode: 1
   - dependency: {fileID: 2800000, guid: ee148e281f3c41c5b4ff5f8a5afe5a6c, type: 3}
     instantiationMode: 1
   - dependency: {fileID: 2111270884470090110, guid: 7999b59795657394782912955b1ca957,
       type: 3}
+    instantiationMode: 1
+  - dependency: {fileID: 11400000, guid: cc2db9cdf4326b7409866aa5bf54cf7e, type: 2}
     instantiationMode: 1
   - dependency: {fileID: 2100000, guid: 65da17aefe9d95a42800a1c22ea0defb, type: 2}
     instantiationMode: 1

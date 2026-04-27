@@ -15,8 +15,6 @@ public class SubtitleManager : MonoBehaviour
     private const float SubtitleUptime = 5.0f;
     private float _countdown;
     
-    // 100, 160, 255 alphas
-    
     public static SubtitleManager Instance { get; private set; }
 
     private void Awake()
@@ -69,7 +67,7 @@ public class SubtitleManager : MonoBehaviour
         for (int i = 0; i < _activeSubtitles.Count; i++)
         {
             var tmp = _activeSubtitles[i].GetComponentInChildren<TextMeshProUGUI>();
-            Color c = tmp.color;
+            var c = tmp.color;
             c.a = _subtitleAlphas[i + (3 - _activeSubtitles.Count)]; // offset so newest is always 1f
             tmp.color = c;
         }

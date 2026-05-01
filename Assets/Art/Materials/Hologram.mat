@@ -68,7 +68,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _CastShadows: 0
-    - _ClipHeight: 0
+    - _ClipHeight: 20
     - _Cull: 2
     - _DstBlend: 10
     - _FresnelPower: 0.66
@@ -76,7 +76,7 @@ Material:
     - _QueueOffset: 0
     - _SrcBlend: 5
     - _Surface: 1
-    - _VertexOffset: 0.005
+    - _VertexOffset: 0
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0

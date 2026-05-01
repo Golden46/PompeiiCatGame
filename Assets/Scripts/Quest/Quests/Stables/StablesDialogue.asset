@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bcdebc331abed343ab49423560ff2b0, type: 3}
+  m_Name: StablesDialogue
+  m_EditorClassIdentifier: 
+  lines:
+  - speaker: Stable hand
+    text: Oh! You startled me. I was just... have you seen Marcus?
+  - speaker: Stable hand
+    text: Marcus? My boss. Big man, loud voice, hard to miss.
+  - speaker: Stable hand
+    text: He was supposed to be back by now and I haven't fed the horses yet
+  - speaker: Stable hand
+    text: I know I should have done it this morning but everything just feels strange
+      today. Have you noticed?
+  - speaker: Stable hand
+    text: Well, anyway, I cant find the feed sacks. I put them down here somewhere
+      please could you look for me?
+  - speaker: Stable hand
+    text: Marcus will be furious with me if I don't put the feed out
+  catColor: {r: 0.2830189, g: 0.14022645, b: 0.10279459, a: 1}

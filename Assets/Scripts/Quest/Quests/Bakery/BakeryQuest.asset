@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1925688539b500246bca1cea3c389818, type: 3}
+  m_Name: BakeryQuest
+  m_EditorClassIdentifier: 
+  questID: Q_numerus_pistoris
+  title: Numerus Pistoris
+  description: Bake the bread
+  objectives:
+  - {fileID: 11400000, guid: f2a80bf34e688214ba84f494280b3822, type: 2}
+  - {fileID: 11400000, guid: 851abafb65200304d89ba9987580780b, type: 2}
+  - {fileID: 11400000, guid: 8bb03c3313c7a014ab34412f0b99470e, type: 2}

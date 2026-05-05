@@ -11,8 +11,8 @@ public class InitiateQuest : MonoBehaviour
     private Renderer[] _objects;
     public List<Renderer> holoStructure;
 
+    public CatAIStateMachine cat;
     public Quest catQuest;
-    public CatDialogue catDialogue;
     public CinemachineVirtualCamera questCamera;
     [SerializeField] private GameObject[] questBuilding; // 0 Slot for the ruin and 1 slot for the full build.
 
@@ -34,8 +34,9 @@ public class InitiateQuest : MonoBehaviour
             if (r.sharedMaterials.Any(m => m == _questManager.holoMaterial))
                 holoStructure.Add(r);
         }
-
-        DialogueManager.Instance.StartDialogue(catDialogue, OnDialogueComplete);
+        
+        AudioManager.PlaySound(SoundType.INTERACT);
+        DialogueManager.Instance.StartDialogue(catQuest.catDialogue, OnDialogueComplete, DialogueType.Start);
     }
 
     private void OnDialogueComplete()
@@ -47,6 +48,6 @@ public class InitiateQuest : MonoBehaviour
         foreach(var b in  questBuilding) _questManager.questBuilding.Add(b);
         
         //Instantiate(_echoSensePrefab, transform.position, _echoSensePrefab.transform.rotation);
-        AudioManager.PlaySound(SoundType.ECHOSENSE, 0.25f);
+        AudioManager.PlaySound(SoundType.ECHO_SENSE);
     }
 }

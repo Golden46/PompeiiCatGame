@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bcdebc331abed343ab49423560ff2b0, type: 3}
+  m_Name: WeaponsDialogue
+  m_EditorClassIdentifier: 
+  startLines:
+  - speaker: Blacksmith
+    text: Oh hello there, if you are looking to buy some weapons you are out of luck
+      today.
+  - speaker: Blacksmith
+    text: I haven't recieved my daily load of metals so the forge hasn't been running.
+  - speaker: Blacksmith
+    text: However, if you are really desperate, there are a few people who still
+      haven't paid for their last order.
+  - speaker: Blacksmith
+    text: Here, I have a list. If you want to go and reposess them for me I will
+      happily give you a nice discount.
+  - speaker: Blacksmith
+    text: If I am not here when you return just ask for Magnus.
+  endLines:
+  - speaker: Magnus
+    text: You're back! Did you find everything with no trouble?
+  - speaker: Magnus
+    text: Brilliant! Pick whatever you want and ill give you 10% off!
+  - speaker: Magnus
+    text: Really? It's not often someone declines my offer. Thank you anyway!
+  catColor: {r: 0.9245283, g: 0.2921858, b: 0.2921858, a: 1}

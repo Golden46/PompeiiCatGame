@@ -52,11 +52,11 @@ public class QuestManager : MonoBehaviour
             case QuestState.Inactive:
                 return false;
             case QuestState.Completed:
-                FinishQuest();
-                break;
+                DialogueManager.Instance.StartDialogue(activeQuest.catDialogue, FinishQuest, DialogueType.End);
+                return true;
+            default:
+                return true;
         }
-
-        return true;
     }
 
     public void StartQuest(Quest quest)
@@ -71,8 +71,8 @@ public class QuestManager : MonoBehaviour
     {
         _questCamera = questCamera;
         const float duration = 9.5f;
-        const float startHeight = 20f;
-        const float endHeight = 30f;
+        const float startHeight = 15f;
+        const float endHeight = 25f;
         foreach (var r in holoStructure)
         {
             StartCoroutine(Verticality(r, duration, startHeight, endHeight, questCamera));
@@ -159,7 +159,7 @@ public class QuestManager : MonoBehaviour
         activeQuestState = QuestState.Completed;
         Debug.Log("Quest completed: " + activeQuest.title);
     }
-
+    
     private void FinishQuest()
     {
         activeQuestState = QuestState.Inactive;
@@ -167,6 +167,7 @@ public class QuestManager : MonoBehaviour
         _completedObjs = 0;
         questUI.DisableQuestUI();
         
+        AudioManager.PlaySound(SoundType.RESTORE);
         StartCoroutine(BuildingTransition());
     }
     

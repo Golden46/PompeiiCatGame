@@ -8,7 +8,11 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public static PlayerControllerStateMachine Instance;
     
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 1.0f;
+    public float MoveSpeed = 1.5f;
+    public float SprintSpeed { get; private set; } = 5.0f;
+    public float CurrentSpeed = 1.5f;
+    
+    public bool IsSprintPressed { get; private set; }
     public bool IsWalkPressed { get; private set; }
     private float _targetAngle;
     private Vector2 _moveInput;
@@ -83,7 +87,8 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-
+        if (context.performed) IsSprintPressed = true;
+        if (context.canceled) IsSprintPressed = false;
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -113,13 +118,17 @@ public class PlayerControllerStateMachine : MonoBehaviour
     public void HandleMovement()
     {
         if (_moveInput == Vector2.zero) return;
-        var moveVelocity = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward * moveSpeed;
+        var moveVelocity = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward * CurrentSpeed;
         Rb.linearVelocity = new Vector3(moveVelocity.x, Rb.linearVelocity.y, moveVelocity.z);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<InitiateQuest>(out var initiateQuest)) _questData = initiateQuest;
+        if (other.TryGetComponent<InitiateQuest>(out var initiateQuest))
+        {
+            _questData = initiateQuest;
+            _questData.cat.InQuestLocation = true;
+        }
         else if (other.TryGetComponent<ObjectInteract>(out var objectInteract)) _interactData = objectInteract;
     }
 
@@ -132,7 +141,11 @@ public class PlayerControllerStateMachine : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<InitiateQuest>(out var initiateQuest)) _questData = null;
+        if (other.TryGetComponent<InitiateQuest>(out var initiateQuest))
+        {
+            _questData.cat.InQuestLocation = false;
+            _questData = null;
+        }
         else if (other.TryGetComponent<ObjectInteract>(out var objectInteract)) _interactData = null;
     }
 }

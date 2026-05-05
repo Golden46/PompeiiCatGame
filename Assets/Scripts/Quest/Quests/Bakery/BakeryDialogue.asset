@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bcdebc331abed343ab49423560ff2b0, type: 3}
+  m_Name: BakeryDialogue
+  m_EditorClassIdentifier: 
+  startLines:
+  - speaker: Baker
+    text: My customers are going to be so dissapointed with me...
+  - speaker: Baker
+    text: I haven't baked this mornings fresh batch of bread, the whole village is
+      going to have to go without.
+  - speaker: Baker
+    text: I was supposed to recieve a delivery of all the ingredients this morning
+      but they never arrived.
+  - speaker: Baker
+    text: Do you think you could help me source some?
+  - speaker: Baker
+    text: My name is Marcella by the way, please bring me my ingredients, im counting
+      on you.
+  - speaker: Marcella
+    text: Here, I will give you a list. You should be able find everything at the
+      market.
+  endLines:
+  - speaker: Marcella
+    text: You got everything! Thank you so much.
+  - speaker: Marcella
+    text: I think I might just be able to bake this mornings batch just in time!
+  - speaker: Marcella
+    text: Though... I don't know if you've notioced but it has been awfully eerie
+      this morning.
+  - speaker: Marcella
+    text: A lot of things are going missing around the town.
+  - speaker: Marcella
+    text: Don't believe me? Have a look around, I'm sure you'll find something.
+  catColor: {r: 0.8207547, g: 0.77683413, b: 0.28261834, a: 1}

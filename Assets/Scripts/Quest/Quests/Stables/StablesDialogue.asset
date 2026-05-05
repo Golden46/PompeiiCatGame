@@ -12,19 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bcdebc331abed343ab49423560ff2b0, type: 3}
   m_Name: StablesDialogue
   m_EditorClassIdentifier: 
-  lines:
+  startLines:
   - speaker: Stable hand
     text: Oh! You startled me. I was just... have you seen Marcus?
   - speaker: Stable hand
     text: Marcus? My boss. Big man, loud voice, hard to miss.
   - speaker: Stable hand
-    text: He was supposed to be back by now and I haven't fed the horses yet
+    text: He was supposed to be back by now and I haven't fed the horses yet.
   - speaker: Stable hand
     text: I know I should have done it this morning but everything just feels strange
       today. Have you noticed?
   - speaker: Stable hand
-    text: Well, anyway, I cant find the feed sacks. I put them down here somewhere
-      please could you look for me?
-  - speaker: Stable hand
-    text: Marcus will be furious with me if I don't put the feed out
+    text: Anyway, I'm Tiberius, the stable hand here.
+  - speaker: Tiberius
+    text: I cant find the feed sacks, I swear I put them down here somewhere.
+  - speaker: Tiberius
+    text: Please could you find them for me and put some feed in with the rest over
+      in the corner.
+  - speaker: Tiberius
+    text: Marcus will be furious with me if I don't put it out and I'd really appreciate
+      the help.
+  - speaker: Tiberius
+    text: Thank you! come and tell me when you are finished.
+  endLines:
+  - speaker: Tiberius
+    text: You did it!? Amazing! I heard that Marcella didn't get her shipment this
+      morning.
+  - speaker: Tiberius
+    text: She works in the bakery within the town walls, if she doesn't get her ingredients
+      there will be no bread!
+  - speaker: Tiberius
+    text: Since you were so helpful to me, do you think you could stop by the bakery
+      and see if she needs any help?
   catColor: {r: 0.2830189, g: 0.14022645, b: 0.10279459, a: 1}

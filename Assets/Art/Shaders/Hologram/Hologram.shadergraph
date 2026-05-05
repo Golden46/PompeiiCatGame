@@ -5519,11 +5519,11 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 20.0,
+    "m_Value": 15.0,
     "m_FloatType": 1,
     "m_RangeValues": {
-        "x": 20.0,
-        "y": 30.0
+        "x": 15.0,
+        "y": 25.0
     }
 }
 

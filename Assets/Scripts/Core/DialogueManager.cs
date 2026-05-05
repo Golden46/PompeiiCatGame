@@ -8,6 +8,7 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance { get; private set; }
     
     private DialogueLine[] _lines;
+    private DialogueLine[] _endLines;
     private int _currentIndex;
     private Action _onComplete;
     private bool _isActive;
@@ -34,15 +35,15 @@ public class DialogueManager : MonoBehaviour
             advanceDialogue.action.performed -= OnAdvance;
     }
 
-    public void StartDialogue(CatDialogue catDialogue, Action onComplete)
+    public void StartDialogue(CatDialogue catDialogue, Action onComplete, DialogueType dialogue)
     {
-        if (catDialogue == null || catDialogue.lines.Length == 0)
+        if (catDialogue == null || catDialogue.startLines.Length == 0)
         {
             onComplete?.Invoke();
             return;
         }
  
-        _lines = catDialogue.lines;
+        _lines = dialogue == DialogueType.Start ? catDialogue.startLines : catDialogue.endLines;
         _dialogueColor = catDialogue.catColor;
         _currentIndex = 0;
         _onComplete = onComplete;
@@ -74,4 +75,10 @@ public class DialogueManager : MonoBehaviour
         var formatted = $"{line.speaker}: {line.text}";
         SubtitleManager.Instance.ShowDialogue(formatted, _dialogueColor);
     }
+}
+
+public enum DialogueType 
+{
+    Start,
+    End
 }

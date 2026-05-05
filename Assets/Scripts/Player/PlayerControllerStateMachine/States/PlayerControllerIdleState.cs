@@ -6,6 +6,7 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
     : base(currentContext, playerControllerStateFactory) { }
     
     private float _timer = 6.0f;
+    private bool _sitting;
     
     public override void EnterState() 
     { 
@@ -16,7 +17,12 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
         CheckSwitchStates();
         _timer -=  Time.deltaTime;
         
-        if (_timer <= 0.0f) _ctx.PlayerAnimator.SetBool("Sit_b", true);
+        if (_timer <= 0.0f && !_sitting)
+        {
+            _sitting = true;
+            AudioManager.PlaySound(SoundType.IDLE);
+            _ctx.PlayerAnimator.SetBool("Sit_b", true);
+        }
     }
 
     public override void FixedUpdateState()
@@ -26,6 +32,7 @@ public class PlayerControllerIdleState : PlayerControllerBaseState
     public override void ExitState()
     {
         _ctx.PlayerAnimator.SetBool("Sit_b", false);
+        _sitting = false;
         _timer = 6.0f;
     }
 

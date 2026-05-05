@@ -7,7 +7,7 @@ internal class PlayerControllerJumpState : PlayerControllerBaseState
     : base(currentContext, playerControllerStateFactory) {}
 
     private float _ledgeGrabT;
-    private readonly float _arcHeight = 0.4f;
+    private readonly float _arcHeight = 0.8f;
     private readonly float _grabSpeed = 1.25f;
     private Vector3 _startPosition;
 
@@ -16,6 +16,8 @@ internal class PlayerControllerJumpState : PlayerControllerBaseState
         _ctx.Rb.isKinematic = true;
         _startPosition = _ctx.transform.position;
         _ledgeGrabT = 0.0f;
+        _ctx.PlayerAnimator.SetFloat("Speed_f", .8f);
+        _ctx.PlayerAnimator.SetBool("RunJump_b", true);
     }
 
     public override void UpdateState()
@@ -41,6 +43,8 @@ internal class PlayerControllerJumpState : PlayerControllerBaseState
 
     public override void ExitState()
     {
+        _ctx.PlayerAnimator.SetFloat("Speed_f", 0.0f);
+        _ctx.PlayerAnimator.SetBool("RunJump_b", false);
         _ctx.TargetLedge = null;
         _ctx.Rb.isKinematic = false; 
     }

@@ -5,12 +5,16 @@ public class PlayerControllerMoveState : PlayerControllerBaseState
     public PlayerControllerMoveState(PlayerControllerStateMachine currentContext, PlayerControllerStateFactory playerControllerStateFactory)
     : base(currentContext, playerControllerStateFactory) { }
 
-    public override void EnterState() { _ctx.PlayerAnimator.SetFloat("Speed_f", 0.5f); }
+    private float _animatorSpeed = 0.5f;
+    
+    public override void EnterState() {  }
 
     public override void UpdateState() 
     {
         CheckSwitchStates();
         _ctx.GetOrientation();
+
+        Speed();
     }
 
     public override void FixedUpdateState()
@@ -18,9 +22,25 @@ public class PlayerControllerMoveState : PlayerControllerBaseState
         _ctx.HandleMovement();
     }
 
+    private void Speed()
+    {
+        _ctx.PlayerAnimator.SetFloat("Speed_f", _animatorSpeed);
+        if (!_ctx.IsWalkPressed) _animatorSpeed = 0.0f;
+        if (_ctx.IsSprintPressed)
+        {
+            _ctx.CurrentSpeed = _ctx.SprintSpeed;
+            _animatorSpeed = 1.0f;
+        }
+        else
+        {
+            _ctx.CurrentSpeed = _ctx.MoveSpeed;
+            _animatorSpeed = 0.5f;
+        }
+    }
+
     public override void ExitState()
     {
-        _ctx.PlayerAnimator.SetFloat("Speed_f", 0f);
+        _ctx.PlayerAnimator.SetFloat("Speed_f", 0.0f);
     }
 
     public override void CheckSwitchStates() 

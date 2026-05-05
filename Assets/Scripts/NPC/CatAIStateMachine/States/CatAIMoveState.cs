@@ -27,6 +27,7 @@ public class CatAIMoveState : CatAIBaseState
     private void MoveToDestination()
     {
         _timer = 0.0f;
+        if (_animating) _ctx.Animator.SetBool(_ctx.CurrentTarget.animationTrigger, false);
         _animating = false;
 
         if (_ctx.InQuestLocation)
@@ -43,6 +44,7 @@ public class CatAIMoveState : CatAIBaseState
 
         _ctx.CurrentTarget = newTarget;
         _ctx.Agent.SetDestination(_ctx.CurrentTarget.point.position);
+        _ctx.Animator.SetFloat("Speed_f", 0.5f);
     }
 
     private void Animate()
@@ -50,19 +52,14 @@ public class CatAIMoveState : CatAIBaseState
         if (!_animating)
         {
             _ctx.Animator.SetBool(_ctx.CurrentTarget.animationTrigger, true);
+            _ctx.Animator.SetFloat("Speed_f", 0f);
             _animating = true;
-        }
-
-        if (_ctx.InQuestLocation)
-        {
-
         }
         else
         {
             _timer += Time.deltaTime;
             if (_timer >= _ctx.CurrentTarget.animationDuration)
             {
-                _ctx.Animator.SetBool(_ctx.CurrentTarget.animationTrigger, false);
                 MoveToDestination();
             }
         }

@@ -9,6 +9,7 @@ public class Quest : ScriptableObject
     [Header("Quest Information")]
     public string title;
     public string description;
+    public CatDialogue catDialogue;
     
     [Header("Quest Objectives")]
     public QuestObjective[] objectives;

@@ -15,6 +15,7 @@ MonoBehaviour:
   questID: Q_oblitus_cibum
   title: Oblitus Cibum
   description: The Forgotten Feed
+  catDialogue: {fileID: 11400000, guid: 0c5f1ab3be2a1ee4c93ab69660bdd41f, type: 2}
   objectives:
   - {fileID: 11400000, guid: b7e9c84d097353d4e98437bb49c861c3, type: 2}
   - {fileID: 11400000, guid: cdc4d01165fb16743bd988365fec7879, type: 2}

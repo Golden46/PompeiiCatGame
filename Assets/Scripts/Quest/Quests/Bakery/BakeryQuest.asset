@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questID: Q_numerus_pistoris
   title: Numerus Pistoris
-  description: Bake the bread
+  description: A Bakers Dozen
+  catDialogue: {fileID: 11400000, guid: d822a6b223762c04fab143cf64b950a2, type: 2}
   objectives:
   - {fileID: 11400000, guid: f2a80bf34e688214ba84f494280b3822, type: 2}
   - {fileID: 11400000, guid: 851abafb65200304d89ba9987580780b, type: 2}

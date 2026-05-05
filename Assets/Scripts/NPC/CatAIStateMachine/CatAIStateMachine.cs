@@ -13,7 +13,7 @@ public class CatAIStateMachine : MonoBehaviour
     private float _stoppingDistance = 0.5f;
     private PatrolPoint _currentTarget;
 
-    private bool _inQuestLocation = false;
+    private bool _inQuestLocation;
 
     // state variables
     private CatAIBaseState _currentState;
